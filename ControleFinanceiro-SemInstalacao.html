@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Controle Financeiro Desktop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #16213e;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 2px solid #0f3460;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2C5F8D 0%, #1a3a52 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .card {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border: 1px solid #0f3460;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #4a9eff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #aaa;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            background: #0f1923;
+            color: #eee;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4a9eff;
+            box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4a9eff 0%, #2C5F8D 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            font-size: 0.9em;
+            padding: 8px 15px;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .summary-card.green {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+        }
+
+        .summary-card.red {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .summary-card.blue {
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+        }
+
+        .summary-card.orange {
+            background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+        }
+
+        .summary-card.yellow {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        }
+
+        .summary-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 15px 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .status-badge.positive {
+            background: #28a745;
+        }
+
+        .status-badge.negative {
+            background: #dc3545;
+        }
+
+        .stats-grid {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 10px;
+            background: #0f1923;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #2C5F8D;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #0f3460;
+        }
+
+        tr:hover {
+            background: rgba(74, 158, 255, 0.1);
+        }
+
+        .value-entrada {
+            color: #56ab2f;
+            font-weight: bold;
+        }
+
+        .value-saida {
+            color: #eb3349;
+            font-weight: bold;
+        }
+
+        .value-investimento {
+            color: #2193b0;
+            font-weight: bold;
+        }
+
+        .chart-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: #0f1923;
+            border-radius: 10px;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border-left: 4px solid #4a9eff;
+        }
+
+        .category-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+
+        .category-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .category-details {
+            flex: 1;
+        }
+
+        .category-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .category-count {
+            font-size: 0.85em;
+            color: #aaa;
+        }
+
+        .category-stats {
+            text-align: right;
+        }
+
+        .category-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #4a9eff;
+        }
+
+        .category-percent {
+            font-size: 0.85em;
+            color: #aaa;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid #0f3460;
+            }
+
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f1923;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2C5F8D;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a9eff;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="card">
+                <h2 class="card-title">💼 Resumo Financeiro</h2>
+                
+                <div class="summary-card green">
+                    <div class="summary-label">💵 Total Entradas</div>
+                    <div class="summary-value" id="total-entradas">R$ 0,00</div>
+                </div>
+
+                <div class="summary-card red">
+                    <div class="summary-label">💸 Total Saídas</div>
+                    <div class="summary-value" id="total-saidas">R$ 0,00</div>
+                </div>
+
+                <div class="summary-card blue">
+                    <div class="summary-label">📈 Total Investido</div>
+                    <div class="summary-value" id="total-investimentos">R$ 0,00</div>
+                </div>
+
+                <div class="summary-card orange">
+                    <div class="summary-label">⚠️ Gastos Desnecessários</div>
+                    <div class="summary-value" id="total-desnecessarios">R$ 0,00</div>
+                </div>
+
+                <div class="summary-card yellow">
+                    <div class="summary-label">💰 Saldo Disponível</div>
+                    <div class="summary-value" id="saldo-disponivel">R$ 0,00</div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-label">🏦 Patrimônio Total</div>
+                    <div class="summary-value" id="patrimonio-total">R$ 0,00</div>
+                </div>
+
+                <div class="status-badge positive" id="status">✅ POSITIVO</div>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span>💡 Economizado</span>
+                        <strong id="percentual-economizado">0%</strong>
+                    </div>
+                    <div class="stat-item">
+                        <span>📉 Maior Gasto</span>
+                        <strong id="maior-gasto">R$ 0,00</strong>
+                    </div>
+                    <div class="stat-item">
+                        <span>📝 Lançamentos</span>
+                        <strong id="total-lancamentos">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">📂 Categorias</h2>
+                <div id="categorias-lista"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>💰 CONTROLE FINANCEIRO PROFISSIONAL</h1>
+                <p>Gerencie suas finanças de forma inteligente e visual</p>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">📝 Novo Lançamento</h2>
+                <form id="form-lancamento">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Data</label>
+                            <input type="date" id="data" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição</label>
+                            <input type="text" id="descricao" placeholder="Ex: Supermercado" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <select id="categoria" required>
+                                <option value="Alimentação">🍔 Alimentação</option>
+                                <option value="Moradia">🏠 Moradia</option>
+                                <option value="Transporte">🚗 Transporte</option>
+                                <option value="Lazer">🎮 Lazer</option>
+                                <option value="Saúde">💊 Saúde</option>
+                                <option value="Contas Fixas">📄 Contas Fixas</option>
+                                <option value="Investimentos">📈 Investimentos</option>
+                                <option value="Renda">💼 Renda</option>
+                                <option value="Outros">🛍️ Outros</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>💵 Entrada (R$)</label>
+                            <input type="number" id="entrada" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>💸 Saída (R$)</label>
+                            <input type="number" id="saida" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>📈 Investimento (R$)</label>
+                            <input type="number" id="investimento" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="desnecessario">
+                        <label for="desnecessario">⚠️ Gasto Desnecessário</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">➕ Adicionar Lançamento</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">📊 Histórico de Lançamentos</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Entrada</th>
+                                <th>Saída</th>
+                                <th>Investimento</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-lancamentos">
+                            <tr>
+                                <td colspan="8">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">📭</div>
+                                        <p>Nenhum lançamento ainda. Adicione seu primeiro lançamento acima!</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="grid-2col">
+                <div class="card">
+                    <h2 class="card-title">📊 Distribuição de Gastos</h2>
+                    <div class="chart-container">
+                        <canvas id="chart-pizza"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">📈 Comparativo Financeiro</h2>
+                    <div class="chart-container">
+                        <canvas id="chart-barras"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // Sistema de armazenamento
+        class ControleFinanceiro {
+            constructor() {
+                this.lancamentos = this.carregarDados();
+                this.categorias = {
+                    'Alimentação': '🍔',
+                    'Moradia': '🏠',
+                    'Transporte': '🚗',
+                    'Lazer': '🎮',
+                    'Saúde': '💊',
+                    'Contas Fixas': '📄',
+                    'Investimentos': '📈',
+                    'Renda': '💼',
+                    'Outros': '🛍️'
+                };
+            }
+
+            carregarDados() {
+                const dados = localStorage.getItem('lancamentos');
+                return dados ? JSON.parse(dados) : [];
+            }
+
+            salvarDados() {
+                localStorage.setItem('lancamentos', JSON.stringify(this.lancamentos));
+            }
+
+            adicionar(lancamento) {
+                lancamento.id = Date.now();
+                this.lancamentos.push(lancamento);
+                this.salvarDados();
+            }
+
+            excluir(id) {
+                this.lancamentos = this.lancamentos.filter(l => l.id !== id);
+                this.salvarDados();
+            }
+
+            calcularResumo() {
+                const totalEntradas = this.lancamentos.reduce((acc, l) => acc + (parseFloat(l.entrada) || 0), 0);
+                const totalSaidas = this.lancamentos.reduce((acc, l) => acc + (parseFloat(l.saida) || 0), 0);
+                const totalInvestimentos = this.lancamentos.reduce((acc, l) => acc + (parseFloat(l.investimento) || 0), 0);
+                const totalDesnecessarios = this.lancamentos.reduce((acc, l) => l.desnecessario ? acc + (parseFloat(l.saida) || 0) : acc, 0);
+
+                return {
+                    totalEntradas,
+                    totalSaidas,
+                    totalInvestimentos,
+                    totalDesnecessarios,
+                    saldoDisponivel: totalEntradas - totalSaidas - totalInvestimentos,
+                    patrimonioTotal: totalEntradas - totalSaidas,
+                    percentualEconomizado: totalEntradas > 0 ? ((totalEntradas - totalSaidas) / totalEntradas * 100) : 0,
+                    maiorGasto: Math.max(...this.lancamentos.map(l => parseFloat(l.saida) || 0), 0),
+                    totalLancamentos: this.lancamentos.length
+                };
+            }
+
+            calcularPorCategoria() {
+                const resultado = {};
+                const totalSaidas = this.lancamentos.reduce((acc, l) => acc + (parseFloat(l.saida) || 0), 0);
+
+                Object.keys(this.categorias).forEach(cat => {
+                    const total = this.lancamentos
+                        .filter(l => l.categoria === cat)
+                        .reduce((acc, l) => acc + (parseFloat(l.saida) || 0), 0);
+                    
+                    const count = this.lancamentos.filter(l => l.categoria === cat).length;
+
+                    resultado[cat] = {
+                        icon: this.categorias[cat],
+                        total,
+                        percent: totalSaidas > 0 ? (total / totalSaidas * 100) : 0,
+                        count
+                    };
+                });
+
+                return resultado;
+            }
+        }
+
+        const app = new ControleFinanceiro();
+        let chartPizza, chartBarras;
+
+        function formatarMoeda(valor) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(valor);
+        }
+
+        function formatarData(data) {
+            return new Date(data + 'T00:00:00').toLocaleDateString('pt-BR');
+        }
+
+        function atualizarDashboard() {
+            const resumo = app.calcularResumo();
+
+            // Atualizar resumo
+            document.getElementById('total-entradas').textContent = formatarMoeda(resumo.totalEntradas);
+            document.getElementById('total-saidas').textContent = formatarMoeda(resumo.totalSaidas);
+            document.getElementById('total-investimentos').textContent = formatarMoeda(resumo.totalInvestimentos);
+            document.getElementById('total-desnecessarios').textContent = formatarMoeda(resumo.totalDesnecessarios);
+            document.getElementById('saldo-disponivel').textContent = formatarMoeda(resumo.saldoDisponivel);
+            document.getElementById('patrimonio-total').textContent = formatarMoeda(resumo.patrimonioTotal);
+
+            // Status
+            const statusEl = document.getElementById('status');
+            if (resumo.patrimonioTotal > 0) {
+                statusEl.textContent = '✅ POSITIVO';
+                statusEl.className = 'status-badge positive';
+            } else {
+                statusEl.textContent = '❌ ENDIVIDADO';
+                statusEl.className = 'status-badge negative';
+            }
+
+            // Estatísticas
+            document.getElementById('percentual-economizado').textContent = resumo.percentualEconomizado.toFixed(1) + '%';
+            document.getElementById('maior-gasto').textContent = formatarMoeda(resumo.maiorGasto);
+            document.getElementById('total-lancamentos').textContent = resumo.totalLancamentos;
+
+            // Tabela
+            atualizarTabela();
+
+            // Gráficos
+            atualizarGraficos();
+
+            // Categorias
+            atualizarCategorias();
+        }
+
+        function atualizarTabela() {
+            const tbody = document.getElementById('tabela-lancamentos');
+            
+            if (app.lancamentos.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📭</div>
+                                <p>Nenhum lançamento ainda. Adicione seu primeiro lançamento acima!</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            const lancamentosOrdenados = [...app.lancamentos].sort((a, b) => new Date(b.data) - new Date(a.data));
+
+            lancamentosOrdenados.forEach(l => {
+                const tr = document.createElement('tr');
+                const entrada = l.entrada > 0 ? formatarMoeda(l.entrada) : '-';
+                const saida = l.saida > 0 ? formatarMoeda(l.saida) : '-';
+                const investimento = l.investimento > 0 ? formatarMoeda(l.investimento) : '-';
+
+                tr.innerHTML = `
+                    <td>${formatarData(l.data)}</td>
+                    <td>${l.descricao}</td>
+                    <td>${app.categorias[l.categoria]} ${l.categoria}</td>
+                    <td class="value-entrada">${entrada}</td>
+                    <td class="value-saida">${saida}</td>
+                    <td class="value-investimento">${investimento}</td>
+                    <td style="text-align: center;">${l.desnecessario ? '⚠️' : '✓'}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="excluirLancamento(${l.id})">
+                            🗑️ Excluir
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function atualizarGraficos() {
+            const categorias = app.calcularPorCategoria();
+            const categoriasComValores = Object.entries(categorias).filter(([_, v]) => v.total > 0);
+
+            if (categoriasComValores.length === 0) return;
+
+            const labels = categoriasComValores.map(([k, v]) => `${v.icon} ${k}`);
+            const data = categoriasComValores.map(([_, v]) => v.total);
+
+            // Gráfico de Pizza
+            const ctxPizza = document.getElementById('chart-pizza').getContext('2d');
+            if (chartPizza) chartPizza.destroy();
+
+            chartPizza = new Chart(ctxPizza, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                            '#9966FF', '#FF9F40', '#2193b0', '#C9CBCF'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#eee' } }
+                    }
+                }
+            });
+
+            // Gráfico de Barras
+            const resumo = app.calcularResumo();
+            const ctxBarras = document.getElementById('chart-barras').getContext('2d');
+            if (chartBarras) chartBarras.destroy();
+
+            chartBarras = new Chart(ctxBarras, {
+                type: 'bar',
+                data: {
+                    labels: ['Entradas', 'Saídas', 'Investimentos'],
+                    datasets: [{
+                        data: [resumo.totalEntradas, resumo.totalSaidas, resumo.totalInvestimentos],
+                        backgroundColor: [
+                            'rgba(86, 171, 47, 0.8)',
+                            'rgba(235, 51, 73, 0.8)',
+                            'rgba(33, 147, 176, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(86, 171, 47, 1)',
+                            'rgba(235, 51, 73, 1)',
+                            'rgba(33, 147, 176, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: { color: '#eee' }
+                        },
+                        x: { ticks: { color: '#eee' } }
+                    }
+                }
+            });
+        }
+
+        function atualizarCategorias() {
+            const container = document.getElementById('categorias-lista');
+            const categorias = app.calcularPorCategoria();
+
+            container.innerHTML = '';
+
+            Object.entries(categorias).forEach(([nome, dados]) => {
+                if (dados.total > 0 || dados.count > 0) {
+                    const div = document.createElement('div');
+                    div.className = 'category-item';
+                    div.innerHTML = `
+                        <div class="category-info">
+                            <span class="category-icon">${dados.icon}</span>
+                            <div class="category-details">
+                                <div class="category-name">${nome}</div>
+                                <div class="category-count">${dados.count} lançamento${dados.count !== 1 ? 's' : ''}</div>
+                            </div>
+                        </div>
+                        <div class="category-stats">
+                            <div class="category-value">${formatarMoeda(dados.total)}</div>
+                            <div class="category-percent">${dados.percent.toFixed(1)}% do total</div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                }
+            });
+
+            if (container.children.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>Nenhuma categoria com gastos ainda</p></div>';
+            }
+        }
+
+        function excluirLancamento(id) {
+            if (confirm('Deseja realmente excluir este lançamento?')) {
+                app.excluir(id);
+                atualizarDashboard();
+            }
+        }
+
+        // Formulário
+        document.getElementById('form-lancamento').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const lancamento = {
+                data: document.getElementById('data').value,
+                descricao: document.getElementById('descricao').value,
+                categoria: document.getElementById('categoria').value,
+                entrada: parseFloat(document.getElementById('entrada').value) || 0,
+                saida: parseFloat(document.getElementById('saida').value) || 0,
+                investimento: parseFloat(document.getElementById('investimento').value) || 0,
+                desnecessario: document.getElementById('desnecessario').checked
+            };
+
+            app.adicionar(lancamento);
+            
+            // Limpar formulário
+            e.target.reset();
+            document.getElementById('data').value = new Date().toISOString().split('T')[0];
+
+            atualizarDashboard();
+            alert('✅ Lançamento adicionado com sucesso!');
+        });
+
+        // Inicializar
+        document.getElementById('data').value = new Date().toISOString().split('T')[0];
+        atualizarDashboard();
+    </script>
+</body>
+</html>
