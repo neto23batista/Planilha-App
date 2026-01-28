@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +25,7 @@
         }
 
         .sidebar {
-            width: 300px;
+            width: 320px;
             background: #16213e;
             padding: 20px;
             overflow-y: auto;
@@ -43,13 +44,13 @@
             border-radius: 15px;
             margin-bottom: 20px;
             text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .header h1 {
             font-size: 2.2em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .header p {
@@ -62,7 +63,7 @@
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             border: 1px solid #0f3460;
         }
 
@@ -77,7 +78,7 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             margin-bottom: 15px;
         }
@@ -149,12 +150,23 @@
         .btn-danger {
             background: #dc3545;
             color: white;
-            font-size: 0.9em;
-            padding: 8px 15px;
+            font-size: 0.85em;
+            padding: 6px 12px;
         }
 
         .btn-danger:hover {
             background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+            font-size: 0.85em;
+            padding: 6px 12px;
+        }
+
+        .btn-success:hover {
+            background: #218838;
         }
 
         .summary-card {
@@ -163,7 +175,7 @@
             padding: 20px;
             margin-bottom: 15px;
             color: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .summary-card.green {
@@ -226,7 +238,7 @@
             display: flex;
             justify-content: space-between;
             padding: 10px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
         }
 
@@ -245,17 +257,19 @@
         th {
             background: #2C5F8D;
             color: white;
-            padding: 15px;
+            padding: 15px 10px;
             text-align: left;
             font-weight: 600;
             position: sticky;
             top: 0;
             z-index: 10;
+            font-size: 0.9em;
         }
 
         td {
-            padding: 12px 15px;
+            padding: 12px 10px;
             border-bottom: 1px solid #0f3460;
+            font-size: 0.9em;
         }
 
         tr:hover {
@@ -277,6 +291,58 @@
             font-weight: bold;
         }
 
+        .status-paga {
+            background: #28a745;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-nao-paga {
+            background: #dc3545;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-parcelada {
+            background: #ffc107;
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-recorrente {
+            background: #6f42c1;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .badge-parcela {
+            background: #17a2b8;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
         .chart-container {
             margin: 20px 0;
             padding: 20px;
@@ -290,7 +356,7 @@
             align-items: center;
             padding: 15px;
             margin-bottom: 10px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             border-left: 4px solid #4a9eff;
         }
@@ -353,6 +419,55 @@
             gap: 20px;
         }
 
+        .actions-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: #0f3460;
+            border: none;
+            border-radius: 8px;
+            color: #aaa;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #4a9eff;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .alert-info {
+            background: rgba(74, 158, 255, 0.2);
+            border-left: 4px solid #4a9eff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #aaa;
+        }
+
+        .parcela-grupo {
+            background: rgba(23, 162, 184, 0.1);
+            border-left: 3px solid #17a2b8;
+        }
+
         @media (max-width: 1024px) {
             .app-container {
                 flex-direction: column;
@@ -388,12 +503,13 @@
         }
     </style>
 </head>
+
 <body>
     <div class="app-container">
         <div class="sidebar">
             <div class="card">
                 <h2 class="card-title">💼 Resumo Financeiro</h2>
-                
+
                 <div class="summary-card green">
                     <div class="summary-label">💵 Total Entradas</div>
                     <div class="summary-value" id="total-entradas">R$ 0,00</div>
@@ -439,6 +555,10 @@
                         <span>📝 Lançamentos</span>
                         <strong id="total-lancamentos">0</strong>
                     </div>
+                    <div class="stat-item">
+                        <span>❌ Não Pagas</span>
+                        <strong id="total-nao-pagas" style="color: #dc3545;">0</strong>
+                    </div>
                 </div>
             </div>
 
@@ -480,6 +600,14 @@
                                 <option value="Outros">🛍️ Outros</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label>Status de Pagamento</label>
+                            <select id="status-pagamento" required>
+                                <option value="paga">✅ Paga</option>
+                                <option value="nao-paga">❌ Não Paga</option>
+                                <option value="parcelada">💳 Parcelada</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-grid">
@@ -495,11 +623,24 @@
                             <label>📈 Investimento (R$)</label>
                             <input type="number" id="investimento" placeholder="0.00" step="0.01" min="0">
                         </div>
+                        <div class="form-group">
+                            <label>📦 Parcelas (se parcelada)</label>
+                            <input type="number" id="parcelas" placeholder="Ex: 12" min="2" max="120">
+                        </div>
+                    </div>
+
+                    <div class="alert-info" id="alert-parcelas" style="display: none;">
+                        💡 <strong>Parcelamento:</strong> Ao informar parcelas, serão criados automaticamente <span
+                            id="num-parcelas">X</span> lançamentos mensais,
+                        começando no mês atual. Cada parcela terá status "Não Paga" inicialmente.
                     </div>
 
                     <div class="checkbox-group">
                         <input type="checkbox" id="desnecessario">
                         <label for="desnecessario">⚠️ Gasto Desnecessário</label>
+
+                        <input type="checkbox" id="recorrente" style="margin-left: 20px;">
+                        <label for="recorrente">🔄 Conta Fixa Recorrente (repete todo mês)</label>
                     </div>
 
                     <button type="submit" class="btn btn-primary">➕ Adicionar Lançamento</button>
@@ -507,32 +648,72 @@
             </div>
 
             <div class="card">
-                <h2 class="card-title">📊 Histórico de Lançamentos</h2>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Descrição</th>
-                                <th>Categoria</th>
-                                <th>Entrada</th>
-                                <th>Saída</th>
-                                <th>Investimento</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabela-lancamentos">
-                            <tr>
-                                <td colspan="8">
-                                    <div class="empty-state">
-                                        <div class="empty-state-icon">📭</div>
-                                        <p>Nenhum lançamento ainda. Adicione seu primeiro lançamento acima!</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="trocarAba('lancamentos')">📊 Lançamentos</button>
+                    <button class="tab-btn" onclick="trocarAba('contas-fixas')">🔄 Contas Fixas</button>
+                </div>
+
+                <div id="tab-lancamentos" class="tab-content active">
+                    <h2 class="card-title">📊 Histórico de Lançamentos</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Entrada</th>
+                                    <th>Saída</th>
+                                    <th>Investimento</th>
+                                    <th>Status Pgto</th>
+                                    <th>Info</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-lancamentos">
+                                <tr>
+                                    <td colspan="9">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">📭</div>
+                                            <p>Nenhum lançamento ainda. Adicione seu primeiro lançamento acima!</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-contas-fixas" class="tab-content">
+                    <h2 class="card-title">🔄 Contas Fixas Cadastradas</h2>
+                    <p style="color: #aaa; margin-bottom: 15px;">
+                        Contas fixas são lançamentos que se repetem automaticamente todo mês.
+                        Elas permanecerão até você excluí-las.
+                    </p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Valor</th>
+                                    <th>Tipo</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-contas-fixas">
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">📋</div>
+                                            <p>Nenhuma conta fixa cadastrada. Marque "Conta Fixa Recorrente" ao
+                                                adicionar um lançamento.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -556,10 +737,23 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
+        // Mostrar/ocultar alerta de parcelas
+        document.getElementById('parcelas').addEventListener('input', function () {
+            const parcelas = parseInt(this.value);
+            const alert = document.getElementById('alert-parcelas');
+            if (parcelas >= 2) {
+                document.getElementById('num-parcelas').textContent = parcelas;
+                alert.style.display = 'block';
+            } else {
+                alert.style.display = 'none';
+            }
+        });
+
         // Sistema de armazenamento
         class ControleFinanceiro {
             constructor() {
-                this.lancamentos = this.carregarDados();
+                this.lancamentos = this.carregarDados('lancamentos');
+                this.contasFixas = this.carregarDados('contasFixas');
                 this.categorias = {
                     'Alimentação': '🍔',
                     'Moradia': '🏠',
@@ -571,26 +765,142 @@
                     'Renda': '💼',
                     'Outros': '🛍️'
                 };
+                this.verificarContasFixasDoMes();
             }
 
-            carregarDados() {
-                const dados = localStorage.getItem('lancamentos');
+            carregarDados(chave) {
+                const dados = localStorage.getItem(chave);
                 return dados ? JSON.parse(dados) : [];
             }
 
-            salvarDados() {
-                localStorage.setItem('lancamentos', JSON.stringify(this.lancamentos));
+            salvarDados(chave, dados) {
+                localStorage.setItem(chave, JSON.stringify(dados));
+            }
+
+            verificarContasFixasDoMes() {
+                const mesAtual = new Date().toISOString().slice(0, 7);
+                const ultimaMesGerado = localStorage.getItem('ultimoMesContasFixas');
+
+                if (ultimaMesGerado !== mesAtual && this.contasFixas.length > 0) {
+                    const diaAtual = new Date().getDate();
+
+                    this.contasFixas.forEach(conta => {
+                        const jaExiste = this.lancamentos.some(l =>
+                            l.contaFixaId === conta.id &&
+                            l.data.startsWith(mesAtual)
+                        );
+
+                        if (!jaExiste) {
+                            const novoLancamento = {
+                                id: Date.now() + Math.random(),
+                                data: `${mesAtual}-${String(diaAtual).padStart(2, '0')}`,
+                                descricao: conta.descricao,
+                                categoria: conta.categoria,
+                                entrada: conta.entrada || 0,
+                                saida: conta.saida || 0,
+                                investimento: conta.investimento || 0,
+                                statusPagamento: 'nao-paga',
+                                desnecessario: false,
+                                recorrente: false,
+                                contaFixaId: conta.id
+                            };
+                            this.lancamentos.push(novoLancamento);
+                        }
+                    });
+
+                    this.salvarDados('lancamentos', this.lancamentos);
+                    localStorage.setItem('ultimoMesContasFixas', mesAtual);
+                }
             }
 
             adicionar(lancamento) {
-                lancamento.id = Date.now();
-                this.lancamentos.push(lancamento);
-                this.salvarDados();
+                lancamento.id = Date.now() + Math.random();
+
+                // Se for parcelado, criar os lançamentos futuros
+                if (lancamento.parcelas && lancamento.parcelas >= 2) {
+                    this.criarParcelas(lancamento);
+                } else {
+                    // Se for recorrente (conta fixa mensal)
+                    if (lancamento.recorrente) {
+                        const contaFixa = {
+                            id: Date.now() + Math.random(),
+                            descricao: lancamento.descricao,
+                            categoria: lancamento.categoria,
+                            entrada: lancamento.entrada,
+                            saida: lancamento.saida,
+                            investimento: lancamento.investimento,
+                            desnecessario: lancamento.desnecessario
+                        };
+                        this.contasFixas.push(contaFixa);
+                        this.salvarDados('contasFixas', this.contasFixas);
+                        lancamento.contaFixaId = contaFixa.id;
+                    }
+
+                    this.lancamentos.push(lancamento);
+                }
+
+                this.salvarDados('lancamentos', this.lancamentos);
+            }
+
+            criarParcelas(lancamentoOriginal) {
+                const dataInicial = new Date(lancamentoOriginal.data + 'T00:00:00');
+                const valorParcela = (lancamentoOriginal.entrada || lancamentoOriginal.saida || lancamentoOriginal.investimento) / lancamentoOriginal.parcelas;
+                const grupoParcelaId = Date.now() + Math.random(); // ID único para agrupar parcelas
+
+                for (let i = 0; i < lancamentoOriginal.parcelas; i++) {
+                    const dataParcela = new Date(dataInicial);
+                    dataParcela.setMonth(dataParcela.getMonth() + i);
+
+                    const parcela = {
+                        id: Date.now() + Math.random() + i,
+                        data: dataParcela.toISOString().split('T')[0],
+                        descricao: `${lancamentoOriginal.descricao} (${i + 1}/${lancamentoOriginal.parcelas})`,
+                        categoria: lancamentoOriginal.categoria,
+                        entrada: lancamentoOriginal.entrada ? valorParcela : 0,
+                        saida: lancamentoOriginal.saida ? valorParcela : 0,
+                        investimento: lancamentoOriginal.investimento ? valorParcela : 0,
+                        statusPagamento: i === 0 && lancamentoOriginal.statusPagamento === 'paga' ? 'paga' : 'nao-paga',
+                        desnecessario: lancamentoOriginal.desnecessario,
+                        recorrente: false,
+                        parcelaAtual: i + 1,
+                        totalParcelas: lancamentoOriginal.parcelas,
+                        grupoParcelaId: grupoParcelaId
+                    };
+
+                    this.lancamentos.push(parcela);
+                }
             }
 
             excluir(id) {
-                this.lancamentos = this.lancamentos.filter(l => l.id !== id);
-                this.salvarDados();
+                const lancamento = this.lancamentos.find(l => l.id === id);
+
+                if (lancamento && lancamento.grupoParcelaId) {
+                    // Se for uma parcela, perguntar se quer excluir todas
+                    if (confirm(`Esta é a parcela ${lancamento.parcelaAtual}/${lancamento.totalParcelas}. Deseja excluir TODAS as parcelas deste grupo?`)) {
+                        this.lancamentos = this.lancamentos.filter(l => l.grupoParcelaId !== lancamento.grupoParcelaId);
+                    } else {
+                        this.lancamentos = this.lancamentos.filter(l => l.id !== id);
+                    }
+                } else {
+                    this.lancamentos = this.lancamentos.filter(l => l.id !== id);
+                }
+
+                this.salvarDados('lancamentos', this.lancamentos);
+            }
+
+            excluirContaFixa(id) {
+                this.contasFixas = this.contasFixas.filter(c => c.id !== id);
+                this.lancamentos = this.lancamentos.filter(l => l.contaFixaId !== id);
+                this.salvarDados('contasFixas', this.contasFixas);
+                this.salvarDados('lancamentos', this.lancamentos);
+            }
+
+            alterarStatusPagamento(id, novoStatus) {
+                const lancamento = this.lancamentos.find(l => l.id === id);
+                if (lancamento) {
+                    lancamento.statusPagamento = novoStatus;
+                    this.salvarDados('lancamentos', this.lancamentos);
+                }
             }
 
             calcularResumo() {
@@ -598,6 +908,7 @@
                 const totalSaidas = this.lancamentos.reduce((acc, l) => acc + (parseFloat(l.saida) || 0), 0);
                 const totalInvestimentos = this.lancamentos.reduce((acc, l) => acc + (parseFloat(l.investimento) || 0), 0);
                 const totalDesnecessarios = this.lancamentos.reduce((acc, l) => l.desnecessario ? acc + (parseFloat(l.saida) || 0) : acc, 0);
+                const totalNaoPagas = this.lancamentos.filter(l => l.statusPagamento === 'nao-paga').length;
 
                 return {
                     totalEntradas,
@@ -608,7 +919,8 @@
                     patrimonioTotal: totalEntradas - totalSaidas,
                     percentualEconomizado: totalEntradas > 0 ? ((totalEntradas - totalSaidas) / totalEntradas * 100) : 0,
                     maiorGasto: Math.max(...this.lancamentos.map(l => parseFloat(l.saida) || 0), 0),
-                    totalLancamentos: this.lancamentos.length
+                    totalLancamentos: this.lancamentos.length,
+                    totalNaoPagas
                 };
             }
 
@@ -620,7 +932,7 @@
                     const total = this.lancamentos
                         .filter(l => l.categoria === cat)
                         .reduce((acc, l) => acc + (parseFloat(l.saida) || 0), 0);
-                    
+
                     const count = this.lancamentos.filter(l => l.categoria === cat).length;
 
                     resultado[cat] = {
@@ -649,10 +961,30 @@
             return new Date(data + 'T00:00:00').toLocaleDateString('pt-BR');
         }
 
+        function getStatusBadge(status) {
+            const badges = {
+                'paga': '<span class="status-paga">✅ Paga</span>',
+                'nao-paga': '<span class="status-nao-paga">❌ Não Paga</span>',
+                'parcelada': '<span class="status-parcelada">💳 Parcelada</span>'
+            };
+            return badges[status] || status;
+        }
+
+        function trocarAba(aba) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`tab-${aba}`).classList.add('active');
+
+            if (aba === 'contas-fixas') {
+                atualizarTabelaContasFixas();
+            }
+        }
+
         function atualizarDashboard() {
             const resumo = app.calcularResumo();
 
-            // Atualizar resumo
             document.getElementById('total-entradas').textContent = formatarMoeda(resumo.totalEntradas);
             document.getElementById('total-saidas').textContent = formatarMoeda(resumo.totalSaidas);
             document.getElementById('total-investimentos').textContent = formatarMoeda(resumo.totalInvestimentos);
@@ -660,7 +992,6 @@
             document.getElementById('saldo-disponivel').textContent = formatarMoeda(resumo.saldoDisponivel);
             document.getElementById('patrimonio-total').textContent = formatarMoeda(resumo.patrimonioTotal);
 
-            // Status
             const statusEl = document.getElementById('status');
             if (resumo.patrimonioTotal > 0) {
                 statusEl.textContent = '✅ POSITIVO';
@@ -670,28 +1001,23 @@
                 statusEl.className = 'status-badge negative';
             }
 
-            // Estatísticas
             document.getElementById('percentual-economizado').textContent = resumo.percentualEconomizado.toFixed(1) + '%';
             document.getElementById('maior-gasto').textContent = formatarMoeda(resumo.maiorGasto);
             document.getElementById('total-lancamentos').textContent = resumo.totalLancamentos;
+            document.getElementById('total-nao-pagas').textContent = resumo.totalNaoPagas;
 
-            // Tabela
             atualizarTabela();
-
-            // Gráficos
             atualizarGraficos();
-
-            // Categorias
             atualizarCategorias();
         }
 
         function atualizarTabela() {
             const tbody = document.getElementById('tabela-lancamentos');
-            
+
             if (app.lancamentos.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="8">
+                        <td colspan="9">
                             <div class="empty-state">
                                 <div class="empty-state-icon">📭</div>
                                 <p>Nenhum lançamento ainda. Adicione seu primeiro lançamento acima!</p>
@@ -707,9 +1033,27 @@
 
             lancamentosOrdenados.forEach(l => {
                 const tr = document.createElement('tr');
+                if (l.grupoParcelaId) {
+                    tr.className = 'parcela-grupo';
+                }
+
                 const entrada = l.entrada > 0 ? formatarMoeda(l.entrada) : '-';
                 const saida = l.saida > 0 ? formatarMoeda(l.saida) : '-';
                 const investimento = l.investimento > 0 ? formatarMoeda(l.investimento) : '-';
+
+                const flags = `
+                    ${l.desnecessario ? '⚠️' : ''}
+                    ${l.contaFixaId ? '<span class="status-recorrente">🔄 FIXA</span>' : ''}
+                    ${l.parcelaAtual ? `<span class="badge-parcela">${l.parcelaAtual}/${l.totalParcelas}</span>` : ''}
+                `;
+
+                const acoesStatus = `
+                    <div class="actions-group">
+                        ${l.statusPagamento !== 'paga' ? `<button class="btn btn-success" onclick="marcarComoPaga(${l.id})">✅</button>` : ''}
+                        ${l.statusPagamento !== 'nao-paga' ? `<button class="btn btn-danger" onclick="marcarComoNaoPaga(${l.id})">❌</button>` : ''}
+                        <button class="btn btn-danger" onclick="excluirLancamento(${l.id})">🗑️</button>
+                    </div>
+                `;
 
                 tr.innerHTML = `
                     <td>${formatarData(l.data)}</td>
@@ -718,10 +1062,48 @@
                     <td class="value-entrada">${entrada}</td>
                     <td class="value-saida">${saida}</td>
                     <td class="value-investimento">${investimento}</td>
-                    <td style="text-align: center;">${l.desnecessario ? '⚠️' : '✓'}</td>
+                    <td>${getStatusBadge(l.statusPagamento)}</td>
+                    <td>${flags}</td>
+                    <td>${acoesStatus}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function atualizarTabelaContasFixas() {
+            const tbody = document.getElementById('tabela-contas-fixas');
+
+            if (app.contasFixas.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📋</div>
+                                <p>Nenhuma conta fixa cadastrada. Marque "Conta Fixa Recorrente" ao adicionar um lançamento.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+
+            app.contasFixas.forEach(c => {
+                const tr = document.createElement('tr');
+                const valor = c.entrada > 0 ? formatarMoeda(c.entrada) : c.saida > 0 ? formatarMoeda(c.saida) : formatarMoeda(c.investimento);
+                const tipo = c.entrada > 0 ? '<span class="value-entrada">Entrada</span>' :
+                    c.saida > 0 ? '<span class="value-saida">Saída</span>' :
+                        '<span class="value-investimento">Investimento</span>';
+
+                tr.innerHTML = `
+                    <td>${c.descricao} <span class="status-recorrente">🔄 RECORRENTE</span></td>
+                    <td>${app.categorias[c.categoria]} ${c.categoria}</td>
+                    <td><strong>${valor}</strong></td>
+                    <td>${tipo}</td>
                     <td>
-                        <button class="btn btn-danger" onclick="excluirLancamento(${l.id})">
-                            🗑️ Excluir
+                        <button class="btn btn-danger" onclick="excluirContaFixa(${c.id})">
+                            🗑️ Excluir Permanentemente
                         </button>
                     </td>
                 `;
@@ -738,7 +1120,6 @@
             const labels = categoriasComValores.map(([k, v]) => `${v.icon} ${k}`);
             const data = categoriasComValores.map(([_, v]) => v.total);
 
-            // Gráfico de Pizza
             const ctxPizza = document.getElementById('chart-pizza').getContext('2d');
             if (chartPizza) chartPizza.destroy();
 
@@ -763,7 +1144,6 @@
                 }
             });
 
-            // Gráfico de Barras
             const resumo = app.calcularResumo();
             const ctxBarras = document.getElementById('chart-barras').getContext('2d');
             if (chartBarras) chartBarras.destroy();
@@ -792,7 +1172,7 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { 
+                        y: {
                             beginAtZero: true,
                             ticks: { color: '#eee' }
                         },
@@ -835,15 +1215,33 @@
         }
 
         function excluirLancamento(id) {
-            if (confirm('Deseja realmente excluir este lançamento?')) {
-                app.excluir(id);
+            app.excluir(id);
+            atualizarDashboard();
+        }
+
+        function excluirContaFixa(id) {
+            if (confirm('⚠️ ATENÇÃO: Isso excluirá permanentemente esta conta fixa e TODOS os lançamentos associados a ela. Deseja continuar?')) {
+                app.excluirContaFixa(id);
                 atualizarDashboard();
+                atualizarTabelaContasFixas();
+                alert('✅ Conta fixa excluída com sucesso!');
             }
         }
 
-        // Formulário
+        function marcarComoPaga(id) {
+            app.alterarStatusPagamento(id, 'paga');
+            atualizarDashboard();
+        }
+
+        function marcarComoNaoPaga(id) {
+            app.alterarStatusPagamento(id, 'nao-paga');
+            atualizarDashboard();
+        }
+
         document.getElementById('form-lancamento').addEventListener('submit', (e) => {
             e.preventDefault();
+
+            const parcelas = parseInt(document.getElementById('parcelas').value) || 0;
 
             const lancamento = {
                 data: document.getElementById('data').value,
@@ -852,22 +1250,32 @@
                 entrada: parseFloat(document.getElementById('entrada').value) || 0,
                 saida: parseFloat(document.getElementById('saida').value) || 0,
                 investimento: parseFloat(document.getElementById('investimento').value) || 0,
-                desnecessario: document.getElementById('desnecessario').checked
+                statusPagamento: document.getElementById('status-pagamento').value,
+                parcelas: parcelas >= 2 ? parcelas : null,
+                desnecessario: document.getElementById('desnecessario').checked,
+                recorrente: document.getElementById('recorrente').checked && parcelas < 2
             };
 
             app.adicionar(lancamento);
-            
-            // Limpar formulário
+
             e.target.reset();
             document.getElementById('data').value = new Date().toISOString().split('T')[0];
+            document.getElementById('alert-parcelas').style.display = 'none';
 
             atualizarDashboard();
-            alert('✅ Lançamento adicionado com sucesso!');
+
+            let mensagem = '✅ Lançamento adicionado com sucesso!';
+            if (parcelas >= 2) {
+                mensagem += `\n💳 ${parcelas} parcelas foram criadas automaticamente nos próximos ${parcelas} meses!`;
+            } else if (lancamento.recorrente) {
+                mensagem += '\n🔄 Conta fixa cadastrada! Ela será repetida automaticamente todo mês.';
+            }
+            alert(mensagem);
         });
 
-        // Inicializar
         document.getElementById('data').value = new Date().toISOString().split('T')[0];
         atualizarDashboard();
     </script>
 </body>
+
 </html>
