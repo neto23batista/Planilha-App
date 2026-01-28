@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Controle Financeiro Desktop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 320px;
+            background: #16213e;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 2px solid #0f3460;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2C5F8D 0%, #1a3a52 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .card {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid #0f3460;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #4a9eff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #aaa;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            background: #0f1923;
+            color: #eee;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4a9eff;
+            box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4a9eff 0%, #2C5F8D 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            font-size: 0.85em;
+            padding: 6px 12px;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+            font-size: 0.85em;
+            padding: 6px 12px;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+            font-size: 0.85em;
+            padding: 6px 12px;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .summary-card.green {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+        }
+
+        .summary-card.red {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .summary-card.blue {
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+        }
+
+        .summary-card.orange {
+            background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+        }
+
+        .summary-card.yellow {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        }
+
+        .summary-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 15px 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .status-badge.positive {
+            background: #28a745;
+        }
+
+        .status-badge.negative {
+            background: #dc3545;
+        }
+
+        .stats-grid {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 10px;
+            background: #0f1923;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #2C5F8D;
+            color: white;
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            font-size: 0.9em;
+        }
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #0f3460;
+            font-size: 0.9em;
+        }
+
+        tr:hover {
+            background: rgba(74, 158, 255, 0.1);
+        }
+
+        .value-entrada {
+            color: #56ab2f;
+            font-weight: bold;
+        }
+
+        .value-saida {
+            color: #eb3349;
+            font-weight: bold;
+        }
+
+        .value-investimento {
+            color: #2193b0;
+            font-weight: bold;
+        }
+
+        .status-paga {
+            background: #28a745;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-nao-paga {
+            background: #dc3545;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-parcelada {
+            background: #ffc107;
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-recorrente {
+            background: #6f42c1;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .badge-parcela {
+            background: #17a2b8;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .badge-pagas {
+            background: #28a745;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #56ab2f);
+            transition: width 0.3s;
+        }
+
+        .chart-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: #0f1923;
+            border-radius: 10px;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid #4a9eff;
+        }
+
+        .category-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+
+        .category-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .category-details {
+            flex: 1;
+        }
+
+        .category-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .category-count {
+            font-size: 0.85em;
+            color: #aaa;
+        }
+
+        .category-stats {
+            text-align: right;
+        }
+
+        .category-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #4a9eff;
+        }
+
+        .category-percent {
+            font-size: 0.85em;
+            color: #aaa;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .actions-group {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: #0f3460;
+            border: none;
+            border-radius: 8px;
+            color: #aaa;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #4a9eff;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .alert-info {
+            background: rgba(74, 158, 255, 0.2);
+            border-left: 4px solid #4a9eff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #aaa;
+        }
+
+        .parcela-grupo {
+            background: rgba(23, 162, 184, 0.1);
+            border-left: 3px solid #17a2b8;
+        }
+
+        .parcelamento-item {
+            background: rgba(23, 162, 184, 0.1);
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+
+        .parcelamento-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .parcelamento-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #17a2b8;
+        }
+
+        .parcelamento-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .parcelamento-stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .parcelamento-stat-label {
+            font-size: 0.85em;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .parcelamento-stat-value {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        @media (max-width: 1024px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid #0f3460;
+            }
+
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f1923;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2C5F8D;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a9eff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="card">
+                <h2 class="card-title">💼 Resumo Financeiro</h2>
+
+                <div class="summary-card green">
+                    <div class="summary-label">💵 Total Entradas</div>
+                    <div class="summary-value" id="total-entradas">R$ 0,00</div>
+                </div>
+
+                <div class="summary-card red">
+                    <div class="summary-label">💸 Total Saídas</div>
+                    <div class="summary-value" id="total-saidas">R$ 0,00</div>
+                </div>
+
+                <div class="summary-card blue">
+                    <div class="summary-label">📈 Total Investido</div>
+                    <div class="summary-value" id="total-investimentos">R$ 0,00</div>
+                </div>
+
+                <div class="summary-card orange">
+                    <div class="summary-label">⚠️ Gastos Desnecessários</div>
+                    <div class="summary-value" id="total-desnecessarios">R$ 0,00</div>
+                </div>
+
+                <div class="summary-card yellow">
+                    <div class="summary-label">💰 Saldo Disponível</div>
+                    <div class="summary-value" id="saldo-disponivel">R$ 0,00</div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-label">🏦 Patrimônio Total</div>
+                    <div class="summary-value" id="patrimonio-total">R$ 0,00</div>
+                </div>
+
+                <div class="status-badge positive" id="status">✅ POSITIVO</div>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span>💡 Economizado</span>
+                        <strong id="percentual-economizado">0%</strong>
+                    </div>
+                    <div class="stat-item">
+                        <span>📉 Maior Gasto</span>
+                        <strong id="maior-gasto">R$ 0,00</strong>
+                    </div>
+                    <div class="stat-item">
+                        <span>📝 Lançamentos</span>
+                        <strong id="total-lancamentos">0</strong>
+                    </div>
+                    <div class="stat-item">
+                        <span>❌ Não Pagas</span>
+                        <strong id="total-nao-pagas" style="color: #dc3545;">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">📂 Categorias</h2>
+                <div id="categorias-lista"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>💰 CONTROLE FINANCEIRO PROFISSIONAL</h1>
+                <p>Gerencie suas finanças de forma inteligente e visual</p>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">📝 Novo Lançamento</h2>
+                <form id="form-lancamento">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Data</label>
+                            <input type="date" id="data" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição</label>
+                            <input type="text" id="descricao" placeholder="Ex: Supermercado" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <select id="categoria" required>
+                                <option value="Alimentação">🍔 Alimentação</option>
+                                <option value="Moradia">🏠 Moradia</option>
+                                <option value="Transporte">🚗 Transporte</option>
+                                <option value="Lazer">🎮 Lazer</option>
+                                <option value="Saúde">💊 Saúde</option>
+                                <option value="Contas Fixas">📄 Contas Fixas</option>
+                                <option value="Investimentos">📈 Investimentos</option>
+                                <option value="Renda">💼 Renda</option>
+                                <option value="Outros">🛍️ Outros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status de Pagamento</label>
+                            <select id="status-pagamento" required>
+                                <option value="paga">✅ Paga</option>
+                                <option value="nao-paga">❌ Não Paga</option>
+                                <option value="parcelada">💳 Parcelada</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>💵 Entrada (R$)</label>
+                            <input type="number" id="entrada" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>💸 Saída (R$)</label>
+                            <input type="number" id="saida" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>📈 Investimento (R$)</label>
+                            <input type="number" id="investimento" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>📦 Parcelas (se parcelada)</label>
+                            <input type="number" id="parcelas" placeholder="Ex: 12" min="2" max="120">
+                        </div>
+                    </div>
+
+                    <div class="alert-info" id="alert-parcelas" style="display: none;">
+                        💡 <strong>Parcelamento:</strong> Ao informar parcelas, serão criados automaticamente <span
+                            id="num-parcelas">X</span> lançamentos mensais,
+                        começando no mês atual. Cada parcela terá status "Não Paga" inicialmente.
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="desnecessario">
+                        <label for="desnecessario">⚠️ Gasto Desnecessário</label>
+
+                        <input type="checkbox" id="recorrente" style="margin-left: 20px;">
+                        <label for="recorrente">🔄 Conta Fixa Recorrente (repete todo mês)</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">➕ Adicionar Lançamento</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="trocarAba('lancamentos')">📊 Lançamentos do Mês</button>
+                    <button class="tab-btn" onclick="trocarAba('parcelamentos')">💳 Parcelamentos</button>
+                    <button class="tab-btn" onclick="trocarAba('contas-fixas')">🔄 Contas Fixas</button>
+                </div>
+
+                <div id="tab-lancamentos" class="tab-content active">
+                    <h2 class="card-title">📊 Lançamentos do Mês Atual</h2>
+                    <p style="color: #aaa; margin-bottom: 15px;">
+                        Mostrando apenas lançamentos do mês atual. Para parcelamentos, apenas a parcela do mês é
+                        exibida.
+                    </p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Entrada</th>
+                                    <th>Saída</th>
+                                    <th>Investimento</th>
+                                    <th>Status Pgto</th>
+                                    <th>Info</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-lancamentos">
+                                <tr>
+                                    <td colspan="9">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">📭</div>
+                                            <p>Nenhum lançamento neste mês ainda.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-parcelamentos" class="tab-content">
+                    <h2 class="card-title">💳 Parcelamentos Ativos</h2>
+                    <p style="color: #aaa; margin-bottom: 15px;">
+                        Resumo de todas as compras parceladas com acompanhamento de pagamentos.
+                    </p>
+                    <div id="lista-parcelamentos"></div>
+                </div>
+
+                <div id="tab-contas-fixas" class="tab-content">
+                    <h2 class="card-title">🔄 Contas Fixas Cadastradas</h2>
+                    <p style="color: #aaa; margin-bottom: 15px;">
+                        Contas fixas são lançamentos que se repetem automaticamente todo mês.
+                        Elas permanecerão até você excluí-las.
+                    </p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Valor</th>
+                                    <th>Tipo</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-contas-fixas">
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">📋</div>
+                                            <p>Nenhuma conta fixa cadastrada. Marque "Conta Fixa Recorrente" ao
+                                                adicionar um lançamento.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2col">
+                <div class="card">
+                    <h2 class="card-title">📊 Distribuição de Gastos</h2>
+                    <div class="chart-container">
+                        <canvas id="chart-pizza"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">📈 Comparativo Financeiro</h2>
+                    <div class="chart-container">
+                        <canvas id="chart-barras"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // Mostrar/ocultar alerta de parcelas
+        document.getElementById('parcelas').addEventListener('input', function () {
+            const parcelas = parseInt(this.value);
+            const alert = document.getElementById('alert-parcelas');
+            if (parcelas >= 2) {
+                document.getElementById('num-parcelas').textContent = parcelas;
+                alert.style.display = 'block';
+            } else {
+                alert.style.display = 'none';
+            }
+        });
+
+        // Sistema de armazenamento
+        class ControleFinanceiro {
+            constructor() {
+                this.lancamentos = this.carregarDados('lancamentos');
+                this.contasFixas = this.carregarDados('contasFixas');
+                this.categorias = {
+                    'Alimentação': '🍔',
+                    'Moradia': '🏠',
+                    'Transporte': '🚗',
+                    'Lazer': '🎮',
+                    'Saúde': '💊',
+                    'Contas Fixas': '📄',
+                    'Investimentos': '📈',
+                    'Renda': '💼',
+                    'Outros': '🛍️'
+                };
+                this.verificarContasFixasDoMes();
+            }
+
+            carregarDados(chave) {
+                const dados = localStorage.getItem(chave);
+                return dados ? JSON.parse(dados) : [];
+            }
+
+            salvarDados(chave, dados) {
+                localStorage.setItem(chave, JSON.stringify(dados));
+            }
+
+            verificarContasFixasDoMes() {
+                const mesAtual = new Date().toISOString().slice(0, 7);
+                const ultimaMesGerado = localStorage.getItem('ultimoMesContasFixas');
+
+                if (ultimaMesGerado !== mesAtual && this.contasFixas.length > 0) {
+                    const diaAtual = new Date().getDate();
+
+                    this.contasFixas.forEach(conta => {
+                        const jaExiste = this.lancamentos.some(l =>
+                            l.contaFixaId === conta.id &&
+                            l.data.startsWith(mesAtual)
+                        );
+
+                        if (!jaExiste) {
+                            const novoLancamento = {
+                                id: Date.now() + Math.random(),
+                                data: `${mesAtual}-${String(diaAtual).padStart(2, '0')}`,
+                                descricao: conta.descricao,
+                                categoria: conta.categoria,
+                                entrada: conta.entrada || 0,
+                                saida: conta.saida || 0,
+                                investimento: conta.investimento || 0,
+                                statusPagamento: 'nao-paga',
+                                desnecessario: false,
+                                recorrente: false,
+                                contaFixaId: conta.id
+                            };
+                            this.lancamentos.push(novoLancamento);
+                        }
+                    });
+
+                    this.salvarDados('lancamentos', this.lancamentos);
+                    localStorage.setItem('ultimoMesContasFixas', mesAtual);
+                }
+            }
+
+            adicionar(lancamento) {
+                lancamento.id = Date.now() + Math.random();
+
+                if (lancamento.parcelas && lancamento.parcelas >= 2) {
+                    this.criarParcelas(lancamento);
+                } else {
+                    if (lancamento.recorrente) {
+                        const contaFixa = {
+                            id: Date.now() + Math.random(),
+                            descricao: lancamento.descricao,
+                            categoria: lancamento.categoria,
+                            entrada: lancamento.entrada,
+                            saida: lancamento.saida,
+                            investimento: lancamento.investimento,
+                            desnecessario: lancamento.desnecessario
+                        };
+                        this.contasFixas.push(contaFixa);
+                        this.salvarDados('contasFixas', this.contasFixas);
+                        lancamento.contaFixaId = contaFixa.id;
+                    }
+
+                    this.lancamentos.push(lancamento);
+                }
+
+                this.salvarDados('lancamentos', this.lancamentos);
+            }
+
+            criarParcelas(lancamentoOriginal) {
+                const dataInicial = new Date(lancamentoOriginal.data + 'T00:00:00');
+                const valorParcela = (lancamentoOriginal.entrada || lancamentoOriginal.saida || lancamentoOriginal.investimento) / lancamentoOriginal.parcelas;
+                const grupoParcelaId = Date.now() + Math.random();
+
+                for (let i = 0; i < lancamentoOriginal.parcelas; i++) {
+                    const dataParcela = new Date(dataInicial);
+                    dataParcela.setMonth(dataParcela.getMonth() + i);
+
+                    const parcela = {
+                        id: Date.now() + Math.random() + i,
+                        data: dataParcela.toISOString().split('T')[0],
+                        descricao: lancamentoOriginal.descricao,
+                        descricaoOriginal: lancamentoOriginal.descricao,
+                        categoria: lancamentoOriginal.categoria,
+                        entrada: lancamentoOriginal.entrada ? valorParcela : 0,
+                        saida: lancamentoOriginal.saida ? valorParcela : 0,
+                        investimento: lancamentoOriginal.investimento ? valorParcela : 0,
+                        statusPagamento: i === 0 && lancamentoOriginal.statusPagamento === 'paga' ? 'paga' : 'nao-paga',
+                        desnecessario: lancamentoOriginal.desnecessario,
+                        recorrente: false,
+                        parcelaAtual: i + 1,
+                        totalParcelas: lancamentoOriginal.parcelas,
+                        grupoParcelaId: grupoParcelaId
+                    };
+
+                    this.lancamentos.push(parcela);
+                }
+            }
+
+            excluir(id) {
+                const lancamento = this.lancamentos.find(l => l.id === id);
+
+                if (lancamento && lancamento.grupoParcelaId) {
+                    if (confirm(`Esta é a parcela ${lancamento.parcelaAtual}/${lancamento.totalParcelas}. Deseja excluir TODAS as parcelas deste grupo?`)) {
+                        this.lancamentos = this.lancamentos.filter(l => l.grupoParcelaId !== lancamento.grupoParcelaId);
+                    } else {
+                        this.lancamentos = this.lancamentos.filter(l => l.id !== id);
+                    }
+                } else {
+                    this.lancamentos = this.lancamentos.filter(l => l.id !== id);
+                }
+
+                this.salvarDados('lancamentos', this.lancamentos);
+            }
+
+            excluirGrupoParcelamento(grupoId) {
+                this.lancamentos = this.lancamentos.filter(l => l.grupoParcelaId !== grupoId);
+                this.salvarDados('lancamentos', this.lancamentos);
+            }
+
+            excluirContaFixa(id) {
+                this.contasFixas = this.contasFixas.filter(c => c.id !== id);
+                this.lancamentos = this.lancamentos.filter(l => l.contaFixaId !== id);
+                this.salvarDados('contasFixas', this.contasFixas);
+                this.salvarDados('lancamentos', this.lancamentos);
+            }
+
+            alterarStatusPagamento(id, novoStatus) {
+                const lancamento = this.lancamentos.find(l => l.id === id);
+                if (lancamento) {
+                    lancamento.statusPagamento = novoStatus;
+                    this.salvarDados('lancamentos', this.lancamentos);
+                }
+            }
+
+            obterParcelamentos() {
+                const grupos = {};
+
+                this.lancamentos.forEach(l => {
+                    if (l.grupoParcelaId) {
+                        if (!grupos[l.grupoParcelaId]) {
+                            grupos[l.grupoParcelaId] = {
+                                id: l.grupoParcelaId,
+                                descricao: l.descricaoOriginal || l.descricao.split(' (')[0],
+                                categoria: l.categoria,
+                                totalParcelas: l.totalParcelas,
+                                valorParcela: l.entrada || l.saida || l.investimento,
+                                tipo: l.entrada > 0 ? 'entrada' : l.saida > 0 ? 'saida' : 'investimento',
+                                parcelas: []
+                            };
+                        }
+                        grupos[l.grupoParcelaId].parcelas.push(l);
+                    }
+                });
+
+                // Ordenar parcelas por data
+                Object.values(grupos).forEach(grupo => {
+                    grupo.parcelas.sort((a, b) => new Date(a.data) - new Date(b.data));
+                    grupo.parcelasPagas = grupo.parcelas.filter(p => p.statusPagamento === 'paga').length;
+                    grupo.valorTotal = grupo.valorParcela * grupo.totalParcelas;
+                    grupo.valorPago = grupo.valorParcela * grupo.parcelasPagas;
+                    grupo.valorRestante = grupo.valorTotal - grupo.valorPago;
+                });
+
+                return Object.values(grupos);
+            }
+
+            calcularResumo() {
+                const totalEntradas = this.lancamentos.reduce((acc, l) => acc + (parseFloat(l.entrada) || 0), 0);
+                const totalSaidas = this.lancamentos.reduce((acc, l) => acc + (parseFloat(l.saida) || 0), 0);
+                const totalInvestimentos = this.lancamentos.reduce((acc, l) => acc + (parseFloat(l.investimento) || 0), 0);
+                const totalDesnecessarios = this.lancamentos.reduce((acc, l) => l.desnecessario ? acc + (parseFloat(l.saida) || 0) : acc, 0);
+                const totalNaoPagas = this.lancamentos.filter(l => l.statusPagamento === 'nao-paga').length;
+
+                return {
+                    totalEntradas,
+                    totalSaidas,
+                    totalInvestimentos,
+                    totalDesnecessarios,
+                    saldoDisponivel: totalEntradas - totalSaidas - totalInvestimentos,
+                    patrimonioTotal: totalEntradas - totalSaidas,
+                    percentualEconomizado: totalEntradas > 0 ? ((totalEntradas - totalSaidas) / totalEntradas * 100) : 0,
+                    maiorGasto: Math.max(...this.lancamentos.map(l => parseFloat(l.saida) || 0), 0),
+                    totalLancamentos: this.lancamentos.length,
+                    totalNaoPagas
+                };
+            }
+
+            calcularPorCategoria() {
+                const resultado = {};
+                const totalSaidas = this.lancamentos.reduce((acc, l) => acc + (parseFloat(l.saida) || 0), 0);
+
+                Object.keys(this.categorias).forEach(cat => {
+                    const total = this.lancamentos
+                        .filter(l => l.categoria === cat)
+                        .reduce((acc, l) => acc + (parseFloat(l.saida) || 0), 0);
+
+                    const count = this.lancamentos.filter(l => l.categoria === cat).length;
+
+                    resultado[cat] = {
+                        icon: this.categorias[cat],
+                        total,
+                        percent: totalSaidas > 0 ? (total / totalSaidas * 100) : 0,
+                        count
+                    };
+                });
+
+                return resultado;
+            }
+        }
+
+        const app = new ControleFinanceiro();
+        let chartPizza, chartBarras;
+
+        function formatarMoeda(valor) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(valor);
+        }
+
+        function formatarData(data) {
+            return new Date(data + 'T00:00:00').toLocaleDateString('pt-BR');
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'paga': '<span class="status-paga">✅ Paga</span>',
+                'nao-paga': '<span class="status-nao-paga">❌ Não Paga</span>',
+                'parcelada': '<span class="status-parcelada">💳 Parcelada</span>'
+            };
+            return badges[status] || status;
+        }
+
+        function trocarAba(aba) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`tab-${aba}`).classList.add('active');
+
+            if (aba === 'contas-fixas') {
+                atualizarTabelaContasFixas();
+            } else if (aba === 'parcelamentos') {
+                atualizarListaParcelamentos();
+            }
+        }
+
+        function atualizarDashboard() {
+            const resumo = app.calcularResumo();
+
+            document.getElementById('total-entradas').textContent = formatarMoeda(resumo.totalEntradas);
+            document.getElementById('total-saidas').textContent = formatarMoeda(resumo.totalSaidas);
+            document.getElementById('total-investimentos').textContent = formatarMoeda(resumo.totalInvestimentos);
+            document.getElementById('total-desnecessarios').textContent = formatarMoeda(resumo.totalDesnecessarios);
+            document.getElementById('saldo-disponivel').textContent = formatarMoeda(resumo.saldoDisponivel);
+            document.getElementById('patrimonio-total').textContent = formatarMoeda(resumo.patrimonioTotal);
+
+            const statusEl = document.getElementById('status');
+            if (resumo.patrimonioTotal > 0) {
+                statusEl.textContent = '✅ POSITIVO';
+                statusEl.className = 'status-badge positive';
+            } else {
+                statusEl.textContent = '❌ ENDIVIDADO';
+                statusEl.className = 'status-badge negative';
+            }
+
+            document.getElementById('percentual-economizado').textContent = resumo.percentualEconomizado.toFixed(1) + '%';
+            document.getElementById('maior-gasto').textContent = formatarMoeda(resumo.maiorGasto);
+            document.getElementById('total-lancamentos').textContent = resumo.totalLancamentos;
+            document.getElementById('total-nao-pagas').textContent = resumo.totalNaoPagas;
+
+            atualizarTabela();
+            atualizarGraficos();
+            atualizarCategorias();
+        }
+
+        function atualizarTabela() {
+            const tbody = document.getElementById('tabela-lancamentos');
+            const mesAtual = new Date().toISOString().slice(0, 7);
+
+            // Filtrar apenas lançamentos do mês atual
+            const lancamentosMesAtual = app.lancamentos.filter(l => l.data.startsWith(mesAtual));
+
+            if (lancamentosMesAtual.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📭</div>
+                                <p>Nenhum lançamento neste mês ainda.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            const lancamentosOrdenados = [...lancamentosMesAtual].sort((a, b) => new Date(b.data) - new Date(a.data));
+
+            lancamentosOrdenados.forEach(l => {
+                const tr = document.createElement('tr');
+                if (l.grupoParcelaId) {
+                    tr.className = 'parcela-grupo';
+                }
+
+                const entrada = l.entrada > 0 ? formatarMoeda(l.entrada) : '-';
+                const saida = l.saida > 0 ? formatarMoeda(l.saida) : '-';
+                const investimento = l.investimento > 0 ? formatarMoeda(l.investimento) : '-';
+
+                // Calcular parcelas pagas do grupo
+                let infoParcelamento = '';
+                if (l.grupoParcelaId) {
+                    const parcelasGrupo = app.lancamentos.filter(p => p.grupoParcelaId === l.grupoParcelaId);
+                    const parcelasPagas = parcelasGrupo.filter(p => p.statusPagamento === 'paga').length;
+                    infoParcelamento = `<span class="badge-pagas">${parcelasPagas}/${l.totalParcelas} pagas</span>`;
+                }
+
+                const flags = `
+                    ${l.desnecessario ? '⚠️' : ''}
+                    ${l.contaFixaId ? '<span class="status-recorrente">🔄 FIXA</span>' : ''}
+                    ${l.parcelaAtual ? `<span class="badge-parcela">${l.parcelaAtual}/${l.totalParcelas}</span>` : ''}
+                    ${infoParcelamento}
+                `;
+
+                const acoesStatus = `
+                    <div class="actions-group">
+                        ${l.statusPagamento !== 'paga' ? `<button class="btn btn-success" onclick="marcarComoPaga(${l.id})" title="Marcar como paga">✅</button>` : ''}
+                        ${l.statusPagamento !== 'nao-paga' ? `<button class="btn btn-danger" onclick="marcarComoNaoPaga(${l.id})" title="Marcar como não paga">❌</button>` : ''}
+                        ${l.grupoParcelaId ? `<button class="btn btn-info" onclick="verParcelamento(${l.grupoParcelaId})" title="Ver todas as parcelas">📋</button>` : ''}
+                        <button class="btn btn-danger" onclick="excluirLancamento(${l.id})" title="Excluir">🗑️</button>
+                    </div>
+                `;
+
+                tr.innerHTML = `
+                    <td>${formatarData(l.data)}</td>
+                    <td>${l.descricao}</td>
+                    <td>${app.categorias[l.categoria]} ${l.categoria}</td>
+                    <td class="value-entrada">${entrada}</td>
+                    <td class="value-saida">${saida}</td>
+                    <td class="value-investimento">${investimento}</td>
+                    <td>${getStatusBadge(l.statusPagamento)}</td>
+                    <td>${flags}</td>
+                    <td>${acoesStatus}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function atualizarListaParcelamentos() {
+            const container = document.getElementById('lista-parcelamentos');
+            const parcelamentos = app.obterParcelamentos();
+
+            if (parcelamentos.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">💳</div>
+                        <p>Nenhum parcelamento ativo. Adicione compras parceladas para vê-las aqui.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+
+            parcelamentos.forEach(parc => {
+                const percentualPago = (parc.parcelasPagas / parc.totalParcelas) * 100;
+                const tipoClass = parc.tipo === 'entrada' ? 'value-entrada' :
+                    parc.tipo === 'saida' ? 'value-saida' : 'value-investimento';
+
+                const div = document.createElement('div');
+                div.className = 'parcelamento-item';
+                div.innerHTML = `
+                    <div class="parcelamento-header">
+                        <div>
+                            <div class="parcelamento-title">
+                                ${app.categorias[parc.categoria]} ${parc.descricao}
+                            </div>
+                            <div style="color: #aaa; font-size: 0.9em; margin-top: 5px;">
+                                Categoria: ${parc.categoria}
+                            </div>
+                        </div>
+                        <button class="btn btn-danger" onclick="excluirParcelamento(${parc.id})">
+                            🗑️ Excluir Tudo
+                        </button>
+                    </div>
+
+                    <div class="parcelamento-info">
+                        <div class="parcelamento-stat">
+                            <div class="parcelamento-stat-label">Valor Total</div>
+                            <div class="parcelamento-stat-value ${tipoClass}">${formatarMoeda(parc.valorTotal)}</div>
+                        </div>
+                        <div class="parcelamento-stat">
+                            <div class="parcelamento-stat-label">Valor por Parcela</div>
+                            <div class="parcelamento-stat-value">${formatarMoeda(parc.valorParcela)}</div>
+                        </div>
+                        <div class="parcelamento-stat">
+                            <div class="parcelamento-stat-label">Total de Parcelas</div>
+                            <div class="parcelamento-stat-value">${parc.totalParcelas}x</div>
+                        </div>
+                        <div class="parcelamento-stat">
+                            <div class="parcelamento-stat-label">Parcelas Pagas</div>
+                            <div class="parcelamento-stat-value">
+                                <span class="badge-pagas">${parc.parcelasPagas}/${parc.totalParcelas}</span>
+                            </div>
+                        </div>
+                        <div class="parcelamento-stat">
+                            <div class="parcelamento-stat-label">Valor Pago</div>
+                            <div class="parcelamento-stat-value" style="color: #28a745;">${formatarMoeda(parc.valorPago)}</div>
+                        </div>
+                        <div class="parcelamento-stat">
+                            <div class="parcelamento-stat-label">Valor Restante</div>
+                            <div class="parcelamento-stat-value" style="color: #dc3545;">${formatarMoeda(parc.valorRestante)}</div>
+                        </div>
+                    </div>
+
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: ${percentualPago}%"></div>
+                    </div>
+                    <div style="text-align: center; color: #aaa; font-size: 0.85em; margin-top: 5px;">
+                        ${percentualPago.toFixed(1)}% pago
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <strong style="color: #17a2b8;">📅 Próximas Parcelas:</strong>
+                        <div style="margin-top: 10px; max-height: 200px; overflow-y: auto;">
+                            ${parc.parcelas.map(p => `
+                                <div style="display: flex; justify-content: space-between; padding: 8px; background: rgba(255,255,255,0.03); margin-bottom: 5px; border-radius: 5px;">
+                                    <span>
+                                        ${formatarData(p.data)} - Parcela ${p.parcelaAtual}/${p.totalParcelas}
+                                    </span>
+                                    <span>
+                                        ${formatarMoeda(p.entrada || p.saida || p.investimento)}
+                                        ${getStatusBadge(p.statusPagamento)}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function atualizarTabelaContasFixas() {
+            const tbody = document.getElementById('tabela-contas-fixas');
+
+            if (app.contasFixas.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📋</div>
+                                <p>Nenhuma conta fixa cadastrada. Marque "Conta Fixa Recorrente" ao adicionar um lançamento.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+
+            app.contasFixas.forEach(c => {
+                const tr = document.createElement('tr');
+                const valor = c.entrada > 0 ? formatarMoeda(c.entrada) : c.saida > 0 ? formatarMoeda(c.saida) : formatarMoeda(c.investimento);
+                const tipo = c.entrada > 0 ? '<span class="value-entrada">Entrada</span>' :
+                    c.saida > 0 ? '<span class="value-saida">Saída</span>' :
+                        '<span class="value-investimento">Investimento</span>';
+
+                tr.innerHTML = `
+                    <td>${c.descricao} <span class="status-recorrente">🔄 RECORRENTE</span></td>
+                    <td>${app.categorias[c.categoria]} ${c.categoria}</td>
+                    <td><strong>${valor}</strong></td>
+                    <td>${tipo}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="excluirContaFixa(${c.id})">
+                            🗑️ Excluir Permanentemente
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function atualizarGraficos() {
+            const categorias = app.calcularPorCategoria();
+            const categoriasComValores = Object.entries(categorias).filter(([_, v]) => v.total > 0);
+
+            if (categoriasComValores.length === 0) return;
+
+            const labels = categoriasComValores.map(([k, v]) => `${v.icon} ${k}`);
+            const data = categoriasComValores.map(([_, v]) => v.total);
+
+            const ctxPizza = document.getElementById('chart-pizza').getContext('2d');
+            if (chartPizza) chartPizza.destroy();
+
+            chartPizza = new Chart(ctxPizza, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                            '#9966FF', '#FF9F40', '#2193b0', '#C9CBCF'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#eee' } }
+                    }
+                }
+            });
+
+            const resumo = app.calcularResumo();
+            const ctxBarras = document.getElementById('chart-barras').getContext('2d');
+            if (chartBarras) chartBarras.destroy();
+
+            chartBarras = new Chart(ctxBarras, {
+                type: 'bar',
+                data: {
+                    labels: ['Entradas', 'Saídas', 'Investimentos'],
+                    datasets: [{
+                        data: [resumo.totalEntradas, resumo.totalSaidas, resumo.totalInvestimentos],
+                        backgroundColor: [
+                            'rgba(86, 171, 47, 0.8)',
+                            'rgba(235, 51, 73, 0.8)',
+                            'rgba(33, 147, 176, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(86, 171, 47, 1)',
+                            'rgba(235, 51, 73, 1)',
+                            'rgba(33, 147, 176, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#eee' }
+                        },
+                        x: { ticks: { color: '#eee' } }
+                    }
+                }
+            });
+        }
+
+        function atualizarCategorias() {
+            const container = document.getElementById('categorias-lista');
+            const categorias = app.calcularPorCategoria();
+
+            container.innerHTML = '';
+
+            Object.entries(categorias).forEach(([nome, dados]) => {
+                if (dados.total > 0 || dados.count > 0) {
+                    const div = document.createElement('div');
+                    div.className = 'category-item';
+                    div.innerHTML = `
+                        <div class="category-info">
+                            <span class="category-icon">${dados.icon}</span>
+                            <div class="category-details">
+                                <div class="category-name">${nome}</div>
+                                <div class="category-count">${dados.count} lançamento${dados.count !== 1 ? 's' : ''}</div>
+                            </div>
+                        </div>
+                        <div class="category-stats">
+                            <div class="category-value">${formatarMoeda(dados.total)}</div>
+                            <div class="category-percent">${dados.percent.toFixed(1)}% do total</div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                }
+            });
+
+            if (container.children.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>Nenhuma categoria com gastos ainda</p></div>';
+            }
+        }
+
+        function excluirLancamento(id) {
+            app.excluir(id);
+            atualizarDashboard();
+        }
+
+        function excluirParcelamento(grupoId) {
+            if (confirm('⚠️ ATENÇÃO: Isso excluirá TODAS as parcelas deste parcelamento. Deseja continuar?')) {
+                app.excluirGrupoParcelamento(grupoId);
+                atualizarDashboard();
+                atualizarListaParcelamentos();
+                alert('✅ Parcelamento excluído com sucesso!');
+            }
+        }
+
+        function excluirContaFixa(id) {
+            if (confirm('⚠️ ATENÇÃO: Isso excluirá permanentemente esta conta fixa e TODOS os lançamentos associados a ela. Deseja continuar?')) {
+                app.excluirContaFixa(id);
+                atualizarDashboard();
+                atualizarTabelaContasFixas();
+                alert('✅ Conta fixa excluída com sucesso!');
+            }
+        }
+
+        function marcarComoPaga(id) {
+            app.alterarStatusPagamento(id, 'paga');
+            atualizarDashboard();
+            atualizarListaParcelamentos();
+        }
+
+        function marcarComoNaoPaga(id) {
+            app.alterarStatusPagamento(id, 'nao-paga');
+            atualizarDashboard();
+            atualizarListaParcelamentos();
+        }
+
+        function verParcelamento(grupoId) {
+            trocarAba('parcelamentos');
+            setTimeout(() => {
+                atualizarListaParcelamentos();
+            }, 100);
+        }
+
+        document.getElementById('form-lancamento').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const parcelas = parseInt(document.getElementById('parcelas').value) || 0;
+
+            const lancamento = {
+                data: document.getElementById('data').value,
+                descricao: document.getElementById('descricao').value,
+                categoria: document.getElementById('categoria').value,
+                entrada: parseFloat(document.getElementById('entrada').value) || 0,
+                saida: parseFloat(document.getElementById('saida').value) || 0,
+                investimento: parseFloat(document.getElementById('investimento').value) || 0,
+                statusPagamento: document.getElementById('status-pagamento').value,
+                parcelas: parcelas >= 2 ? parcelas : null,
+                desnecessario: document.getElementById('desnecessario').checked,
+                recorrente: document.getElementById('recorrente').checked && parcelas < 2
+            };
+
+            app.adicionar(lancamento);
+
+            e.target.reset();
+            document.getElementById('data').value = new Date().toISOString().split('T')[0];
+            document.getElementById('alert-parcelas').style.display = 'none';
+
+            atualizarDashboard();
+
+            let mensagem = '✅ Lançamento adicionado com sucesso!';
+            if (parcelas >= 2) {
+                mensagem += `\n💳 ${parcelas} parcelas foram criadas automaticamente nos próximos ${parcelas} meses!`;
+            } else if (lancamento.recorrente) {
+                mensagem += '\n🔄 Conta fixa cadastrada! Ela será repetida automaticamente todo mês.';
+            }
+            alert(mensagem);
+        });
+
+        document.getElementById('data').value = new Date().toISOString().split('T')[0];
+        atualizarDashboard();
+    </script>
+</body>
+
+</html>
