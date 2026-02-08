@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Controle Financeiro Desktop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 320px;
+            background: #16213e;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 2px solid #0f3460;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2C5F8D 0%, #1a3a52 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .card {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid #0f3460;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #4a9eff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #aaa;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            background: #0f1923;
+            color: #eee;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4a9eff;
+            box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4a9eff 0%, #2C5F8D 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            font-size: 0.85em;
+            padding: 6px 12px;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+            font-size: 0.85em;
+            padding: 6px 12px;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+            font-size: 0.85em;
+            padding: 6px 12px;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .summary-card.green {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+        }
+
+        .summary-card.red {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .summary-card.blue {
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+        }
+
+        .summary-card.orange {
+            background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+        }
+
+        .summary-card.yellow {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        }
+
+        .summary-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 15px 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .status-badge.positive {
+            background: #28a745;
+        }
+
+        .status-badge.negative {
+            background: #dc3545;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #0f3460;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            background: transparent;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab:hover {
+            color: #4a9eff;
+        }
+
+        .tab.active {
+            color: #4a9eff;
+            border-bottom-color: #4a9eff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #16213e;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: #0f3460;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #0f3460;
+        }
+
+        th {
+            font-weight: 600;
+            color: #4a9eff;
+        }
+
+        tr:hover {
+            background: rgba(74, 158, 255, 0.05);
+        }
+
+        .value-entrada {
+            color: #56ab2f;
+            font-weight: bold;
+        }
+
+        .value-saida {
+            color: #eb3349;
+            font-weight: bold;
+        }
+
+        .value-investimento {
+            color: #2193b0;
+            font-weight: bold;
+        }
+
+        .status-paga {
+            background: #28a745;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-pendente {
+            background: #ffc107;
+            color: #333;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-nao-paga {
+            background: #dc3545;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .flag-desnecessario {
+            background: #f2994a;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-right: 5px;
+        }
+
+        .flag-parcelado {
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-right: 5px;
+        }
+
+        .status-recorrente {
+            background: #17a2b8;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-left: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+
+        .category-item {
+            background: #0f1923;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #0f3460;
+            transition: all 0.3s;
+        }
+
+        .category-item:hover {
+            border-color: #4a9eff;
+            transform: translateX(5px);
+        }
+
+        .category-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .category-icon {
+            font-size: 2em;
+        }
+
+        .category-name {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #eee;
+        }
+
+        .category-count {
+            font-size: 0.85em;
+            color: #888;
+        }
+
+        .category-stats {
+            text-align: right;
+        }
+
+        .category-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #4a9eff;
+        }
+
+        .category-percent {
+            font-size: 0.85em;
+            color: #888;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .alert-warning {
+            background: #f2994a;
+            color: white;
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .parcelamento-card {
+            background: #0f1923;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid #0f3460;
+        }
+
+        .parcelamento-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #0f3460;
+        }
+
+        .parcelamento-info h3 {
+            color: #4a9eff;
+            margin-bottom: 5px;
+        }
+
+        .parcelamento-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            background: #16213e;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .detail-label {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #eee;
+        }
+
+        .parcelas-lista {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .parcela-item {
+            background: #16213e;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #0f3460;
+            transition: all 0.3s;
+        }
+
+        .parcela-item:hover {
+            border-color: #4a9eff;
+        }
+
+        .parcela-item.paga {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .parcela-numero {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .parcela-data {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .parcela-valor {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #4a9eff;
+            margin-bottom: 8px;
+        }
+
+        .parcela-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid #0f3460;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                overflow-x: auto;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f1923;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0f3460;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a9eff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="header">
+                <h1>💰 Controle Financeiro</h1>
+                <p>Gerencie suas finanças de forma inteligente</p>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📝 Novo Lançamento</div>
+                <form id="form-lancamento">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Data</label>
+                            <input type="date" id="data" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição</label>
+                            <input type="text" id="descricao" placeholder="Ex: Salário" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="categoria" required>
+                            <option value="Alimentação">🍔 Alimentação</option>
+                            <option value="Transporte">🚗 Transporte</option>
+                            <option value="Moradia">🏠 Moradia</option>
+                            <option value="Saúde">⚕️ Saúde</option>
+                            <option value="Educação">📚 Educação</option>
+                            <option value="Lazer">🎮 Lazer</option>
+                            <option value="Investimentos">💎 Investimentos</option>
+                            <option value="Salário">💰 Salário</option>
+                            <option value="Outros">📦 Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Entrada (R$)</label>
+                            <input type="number" id="entrada" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Saída (R$)</label>
+                            <input type="number" id="saida" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Investimento (R$)</label>
+                        <input type="number" id="investimento" placeholder="0.00" step="0.01" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="status-pagamento">
+                            <option value="paga">✅ Paga</option>
+                            <option value="pendente">⏳ Pendente</option>
+                            <option value="nao-paga">❌ Não Paga</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Parcelas</label>
+                        <input type="number" id="parcelas" placeholder="Deixe em branco ou 0 para à vista" min="0"
+                            max="60">
+                    </div>
+
+                    <div class="alert alert-warning" id="alert-parcelas">
+                        💳 Ao adicionar parcelas, múltiplos lançamentos mensais serão criados automaticamente!
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="desnecessario">
+                        <label for="desnecessario">💸 Gasto Desnecessário</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="recorrente">
+                        <label for="recorrente">🔄 Conta Fixa Recorrente</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">➕ Adicionar Lançamento</button>
+                </form>
+            </div>
+
+            <div class="summary-card green">
+                <div class="summary-label">💚 Total de Entradas</div>
+                <div class="summary-value" id="total-entradas">R$ 0,00</div>
+            </div>
+
+            <div class="summary-card red">
+                <div class="summary-label">💸 Total de Saídas</div>
+                <div class="summary-value" id="total-saidas">R$ 0,00</div>
+            </div>
+
+            <div class="summary-card blue">
+                <div class="summary-label">💎 Total de Investimentos</div>
+                <div class="summary-value" id="total-investimentos">R$ 0,00</div>
+            </div>
+
+            <div class="summary-card orange">
+                <div class="summary-label">💰 Saldo Disponível</div>
+                <div class="summary-value" id="saldo-disponivel">R$ 0,00</div>
+            </div>
+
+            <div class="summary-card yellow">
+                <div class="summary-label">📊 Patrimônio Total</div>
+                <div class="summary-value" id="patrimonio-total">R$ 0,00</div>
+            </div>
+
+            <div id="status-financeiro"></div>
+        </div>
+
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab active" onclick="trocarAba('lancamentos')">📋 Lançamentos</button>
+                <button class="tab" onclick="trocarAba('parcelamentos')">💳 Parcelamentos</button>
+                <button class="tab" onclick="trocarAba('contas-fixas')">🔄 Contas Fixas</button>
+                <button class="tab" onclick="trocarAba('categorias')">📊 Categorias</button>
+                <button class="tab" onclick="trocarAba('graficos')">📈 Gráficos</button>
+            </div>
+
+            <div id="tab-lancamentos" class="tab-content active">
+                <div class="card">
+                    <div class="card-title">📋 Todos os Lançamentos</div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Entrada</th>
+                                    <th>Saída</th>
+                                    <th>Investimento</th>
+                                    <th>Status</th>
+                                    <th>Flags</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-lancamentos"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-parcelamentos" class="tab-content">
+                <div class="card">
+                    <div class="card-title">💳 Gerenciar Parcelamentos</div>
+                    <div id="lista-parcelamentos"></div>
+                </div>
+            </div>
+
+            <div id="tab-contas-fixas" class="tab-content">
+                <div class="card">
+                    <div class="card-title">🔄 Contas Fixas Recorrentes</div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Valor</th>
+                                    <th>Tipo</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-contas-fixas"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-categorias" class="tab-content">
+                <div class="card">
+                    <div class="card-title">📊 Análise por Categorias</div>
+                    <div id="categorias-lista"></div>
+                </div>
+            </div>
+
+            <div id="tab-graficos" class="tab-content">
+                <div class="card">
+                    <div class="card-title">📈 Gráfico de Gastos por Categoria</div>
+                    <div class="chart-container">
+                        <canvas id="chart-pizza"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📊 Comparativo Financeiro</div>
+                    <div class="chart-container">
+                        <canvas id="chart-barras"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let chartPizza = null;
+        let chartBarras = null;
+
+        const app = {
+            lancamentos: JSON.parse(localStorage.getItem('lancamentos')) || [],
+            contasFixas: JSON.parse(localStorage.getItem('contasFixas')) || [],
+            contadorId: parseInt(localStorage.getItem('contadorId')) || 1,
+
+            categorias: {
+                'Alimentação': '🍔',
+                'Transporte': '🚗',
+                'Moradia': '🏠',
+                'Saúde': '⚕️',
+                'Educação': '📚',
+                'Lazer': '🎮',
+                'Investimentos': '💎',
+                'Salário': '💰',
+                'Outros': '📦'
+            },
+
+            salvar() {
+                localStorage.setItem('lancamentos', JSON.stringify(this.lancamentos));
+                localStorage.setItem('contasFixas', JSON.stringify(this.contasFixas));
+                localStorage.setItem('contadorId', this.contadorId.toString());
+            },
+
+            adicionar(lancamento) {
+                const parcelas = lancamento.parcelas;
+
+                // Se for parcelado
+                if (parcelas && parcelas >= 2) {
+                    const grupoId = this.contadorId++;
+                    const valorParcela = (lancamento.saida || lancamento.investimento || lancamento.entrada) / parcelas;
+
+                    for (let i = 0; i < parcelas; i++) {
+                        const data = new Date(lancamento.data);
+                        data.setMonth(data.getMonth() + i);
+
+                        this.lancamentos.push({
+                            id: this.contadorId++,
+                            data: data.toISOString().split('T')[0],
+                            descricao: `${lancamento.descricao} (${i + 1}/${parcelas})`,
+                            categoria: lancamento.categoria,
+                            entrada: lancamento.entrada > 0 ? valorParcela : 0,
+                            saida: lancamento.saida > 0 ? valorParcela : 0,
+                            investimento: lancamento.investimento > 0 ? valorParcela : 0,
+                            statusPagamento: i === 0 ? lancamento.statusPagamento : 'pendente',
+                            desnecessario: lancamento.desnecessario,
+                            parcelado: true,
+                            grupoParcelamento: grupoId,
+                            parcelaNumero: i + 1,
+                            totalParcelas: parcelas
+                        });
+                    }
+                }
+                // Se for recorrente
+                else if (lancamento.recorrente) {
+                    const contaFixaId = this.contadorId++;
+
+                    this.contasFixas.push({
+                        id: contaFixaId,
+                        descricao: lancamento.descricao,
+                        categoria: lancamento.categoria,
+                        entrada: lancamento.entrada,
+                        saida: lancamento.saida,
+                        investimento: lancamento.investimento,
+                        desnecessario: lancamento.desnecessario
+                    });
+
+                    this.lancamentos.push({
+                        id: this.contadorId++,
+                        data: lancamento.data,
+                        descricao: lancamento.descricao,
+                        categoria: lancamento.categoria,
+                        entrada: lancamento.entrada,
+                        saida: lancamento.saida,
+                        investimento: lancamento.investimento,
+                        statusPagamento: lancamento.statusPagamento,
+                        desnecessario: lancamento.desnecessario,
+                        recorrente: true,
+                        contaFixaId: contaFixaId
+                    });
+                }
+                // Lançamento simples
+                else {
+                    this.lancamentos.push({
+                        id: this.contadorId++,
+                        data: lancamento.data,
+                        descricao: lancamento.descricao,
+                        categoria: lancamento.categoria,
+                        entrada: lancamento.entrada,
+                        saida: lancamento.saida,
+                        investimento: lancamento.investimento,
+                        statusPagamento: lancamento.statusPagamento,
+                        desnecessario: lancamento.desnecessario
+                    });
+                }
+
+                this.salvar();
+            },
+
+            excluir(id) {
+                this.lancamentos = this.lancamentos.filter(l => l.id !== id);
+                this.salvar();
+            },
+
+            excluirGrupoParcelamento(grupoId) {
+                this.lancamentos = this.lancamentos.filter(l => l.grupoParcelamento !== grupoId);
+                this.salvar();
+            },
+
+            excluirContaFixa(id) {
+                this.lancamentos = this.lancamentos.filter(l => l.contaFixaId !== id);
+                this.contasFixas = this.contasFixas.filter(c => c.id !== id);
+                this.salvar();
+            },
+
+            alterarStatusPagamento(id, novoStatus) {
+                const lancamento = this.lancamentos.find(l => l.id === id);
+                if (lancamento) {
+                    lancamento.statusPagamento = novoStatus;
+                    this.salvar();
+                }
+            },
+
+            calcularResumo() {
+                const totalEntradas = this.lancamentos.reduce((acc, l) => acc + (l.entrada || 0), 0);
+                const totalSaidas = this.lancamentos.reduce((acc, l) => acc + (l.saida || 0), 0);
+                const totalInvestimentos = this.lancamentos.reduce((acc, l) => acc + (l.investimento || 0), 0);
+                const saldoDisponivel = totalEntradas - totalSaidas - totalInvestimentos;
+                const patrimonioTotal = totalEntradas - totalSaidas;
+
+                return {
+                    totalEntradas,
+                    totalSaidas,
+                    totalInvestimentos,
+                    saldoDisponivel,
+                    patrimonioTotal
+                };
+            },
+
+            calcularPorCategoria() {
+                const categorias = {};
+                let totalGeral = 0;
+
+                Object.keys(this.categorias).forEach(cat => {
+                    categorias[cat] = {
+                        total: 0,
+                        count: 0,
+                        icon: this.categorias[cat],
+                        percent: 0
+                    };
+                });
+
+                this.lancamentos.forEach(l => {
+                    const valor = l.saida + l.investimento;
+                    if (categorias[l.categoria]) {
+                        categorias[l.categoria].total += valor;
+                        categorias[l.categoria].count++;
+                        totalGeral += valor;
+                    }
+                });
+
+                Object.keys(categorias).forEach(cat => {
+                    if (totalGeral > 0) {
+                        categorias[cat].percent = (categorias[cat].total / totalGeral) * 100;
+                    }
+                });
+
+                return categorias;
+            },
+
+            obterParcelamentos() {
+                const grupos = {};
+
+                this.lancamentos.forEach(l => {
+                    if (l.parcelado && l.grupoParcelamento) {
+                        if (!grupos[l.grupoParcelamento]) {
+                            grupos[l.grupoParcelamento] = {
+                                id: l.grupoParcelamento,
+                                descricao: l.descricao.replace(/\s*\(\d+\/\d+\)/, ''),
+                                categoria: l.categoria,
+                                totalParcelas: l.totalParcelas,
+                                parcelas: []
+                            };
+                        }
+                        grupos[l.grupoParcelamento].parcelas.push(l);
+                    }
+                });
+
+                return Object.values(grupos);
+            }
+        };
+
+        function formatarMoeda(valor) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(valor);
+        }
+
+        function formatarData(data) {
+            return new Date(data + 'T00:00:00').toLocaleDateString('pt-BR');
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'paga': '<span class="status-paga">✅ PAGA</span>',
+                'pendente': '<span class="status-pendente">⏳ PENDENTE</span>',
+                'nao-paga': '<span class="status-nao-paga">❌ NÃO PAGA</span>'
+            };
+            return badges[status] || '';
+        }
+
+        function trocarAba(aba) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            document.querySelector(`[onclick="trocarAba('${aba}')"]`).classList.add('active');
+            document.getElementById(`tab-${aba}`).classList.add('active');
+
+            if (aba === 'graficos') {
+                setTimeout(() => atualizarGraficos(), 100);
+            } else if (aba === 'categorias') {
+                atualizarCategorias();
+            } else if (aba === 'contas-fixas') {
+                atualizarTabelaContasFixas();
+            } else if (aba === 'parcelamentos') {
+                atualizarListaParcelamentos();
+            }
+        }
+
+        function atualizarDashboard() {
+            const resumo = app.calcularResumo();
+
+            document.getElementById('total-entradas').textContent = formatarMoeda(resumo.totalEntradas);
+            document.getElementById('total-saidas').textContent = formatarMoeda(resumo.totalSaidas);
+            document.getElementById('total-investimentos').textContent = formatarMoeda(resumo.totalInvestimentos);
+            document.getElementById('saldo-disponivel').textContent = formatarMoeda(resumo.saldoDisponivel);
+            document.getElementById('patrimonio-total').textContent = formatarMoeda(resumo.patrimonioTotal);
+
+            const statusDiv = document.getElementById('status-financeiro');
+            if (resumo.saldoDisponivel >= 0) {
+                statusDiv.innerHTML = '<div class="status-badge positive">✅ Situação Positiva!</div>';
+            } else {
+                statusDiv.innerHTML = '<div class="status-badge negative">⚠️ Atenção ao Saldo!</div>';
+            }
+
+            atualizarTabela();
+        }
+
+        function atualizarTabela() {
+            const tbody = document.getElementById('tabela-lancamentos');
+
+            if (app.lancamentos.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📭</div>
+                                <p>Nenhum lançamento ainda. Comece adicionando sua primeira transação!</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+
+            const lancamentosOrdenados = [...app.lancamentos].sort((a, b) => {
+                return new Date(b.data) - new Date(a.data);
+            });
+
+            lancamentosOrdenados.forEach(l => {
+                const tr = document.createElement('tr');
+
+                const entrada = l.entrada > 0 ? `<span class="value-entrada">${formatarMoeda(l.entrada)}</span>` : '-';
+                const saida = l.saida > 0 ? `<span class="value-saida">${formatarMoeda(l.saida)}</span>` : '-';
+                const investimento = l.investimento > 0 ? `<span class="value-investimento">${formatarMoeda(l.investimento)}</span>` : '-';
+
+                let flags = '';
+                if (l.desnecessario) flags += '<span class="flag-desnecessario">💸 DESNECESSÁRIO</span>';
+                if (l.parcelado) flags += '<span class="flag-parcelado">💳 PARCELADO</span>';
+
+                const acoesStatus = `
+                    <div class="actions-cell">
+                        ${l.parcelado ? `<button class="btn btn-info" onclick="verParcelamento(${l.grupoParcelamento})">👁️</button>` : ''}
+                        ${l.statusPagamento !== 'paga' ? `<button class="btn btn-success" onclick="marcarComoPaga(${l.id})">✅</button>` : ''}
+                        ${l.statusPagamento !== 'nao-paga' ? `<button class="btn btn-danger" onclick="marcarComoNaoPaga(${l.id})">❌</button>` : ''}
+                        <button class="btn btn-danger" onclick="excluirLancamento(${l.id})">🗑️</button>
+                    </div>
+                `;
+
+                tr.innerHTML = `
+                    <td>${formatarData(l.data)}</td>
+                    <td>${l.descricao}</td>
+                    <td>${app.categorias[l.categoria]} ${l.categoria}</td>
+                    <td>${entrada}</td>
+                    <td>${saida}</td>
+                    <td>${investimento}</td>
+                    <td>${getStatusBadge(l.statusPagamento)}</td>
+                    <td>${flags}</td>
+                    <td>${acoesStatus}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function atualizarListaParcelamentos() {
+            const container = document.getElementById('lista-parcelamentos');
+            const parcelamentos = app.obterParcelamentos();
+
+            if (parcelamentos.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">💳</div>
+                        <p>Nenhum parcelamento cadastrado. Adicione parcelas ao criar um lançamento!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+
+            parcelamentos.forEach(p => {
+                const valorTotal = p.parcelas.reduce((acc, parcela) =>
+                    acc + (parcela.entrada || parcela.saida || parcela.investimento), 0);
+                const parcelasPagas = p.parcelas.filter(parcela => parcela.statusPagamento === 'paga').length;
+                const progresso = ((parcelasPagas / p.totalParcelas) * 100).toFixed(0);
+
+                const div = document.createElement('div');
+                div.className = 'parcelamento-card';
+                div.innerHTML = `
+                    <div class="parcelamento-header">
+                        <div class="parcelamento-info">
+                            <h3>${p.descricao}</h3>
+                            <p>${app.categorias[p.categoria]} ${p.categoria}</p>
+                        </div>
+                        <button class="btn btn-danger" onclick="excluirParcelamento(${p.id})">
+                            🗑️ Excluir Parcelamento
+                        </button>
+                    </div>
+                    <div class="parcelamento-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Valor Total</div>
+                            <div class="detail-value">${formatarMoeda(valorTotal)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Total de Parcelas</div>
+                            <div class="detail-value">${p.totalParcelas}x</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Parcelas Pagas</div>
+                            <div class="detail-value">${parcelasPagas} de ${p.totalParcelas}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Progresso</div>
+                            <div class="detail-value">${progresso}%</div>
+                        </div>
+                    </div>
+                    <div class="parcelas-lista">
+                        ${p.parcelas.sort((a, b) => a.parcelaNumero - b.parcelaNumero).map(parcela => `
+                            <div class="parcela-item ${parcela.statusPagamento === 'paga' ? 'paga' : ''}">
+                                <div class="parcela-numero">Parcela ${parcela.parcelaNumero}/${p.totalParcelas}</div>
+                                <div class="parcela-data">${formatarData(parcela.data)}</div>
+                                <div class="parcela-valor">${formatarMoeda(parcela.entrada || parcela.saida || parcela.investimento)}</div>
+                                <div>${getStatusBadge(parcela.statusPagamento)}</div>
+                                <div class="parcela-actions">
+                                    ${parcela.statusPagamento !== 'paga' ?
+                        `<button class="btn btn-success" onclick="marcarComoPaga(${parcela.id})">✅</button>` : ''}
+                                    ${parcela.statusPagamento !== 'nao-paga' ?
+                        `<button class="btn btn-danger" onclick="marcarComoNaoPaga(${parcela.id})">❌</button>` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function atualizarTabelaContasFixas() {
+            const tbody = document.getElementById('tabela-contas-fixas');
+
+            if (app.contasFixas.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📋</div>
+                                <p>Nenhuma conta fixa cadastrada. Marque "Conta Fixa Recorrente" ao adicionar um lançamento.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+
+            app.contasFixas.forEach(c => {
+                const tr = document.createElement('tr');
+                const valor = c.entrada > 0 ? formatarMoeda(c.entrada) : c.saida > 0 ? formatarMoeda(c.saida) : formatarMoeda(c.investimento);
+                const tipo = c.entrada > 0 ? '<span class="value-entrada">Entrada</span>' :
+                    c.saida > 0 ? '<span class="value-saida">Saída</span>' :
+                        '<span class="value-investimento">Investimento</span>';
+
+                tr.innerHTML = `
+                    <td>${c.descricao} <span class="status-recorrente">🔄 RECORRENTE</span></td>
+                    <td>${app.categorias[c.categoria]} ${c.categoria}</td>
+                    <td><strong>${valor}</strong></td>
+                    <td>${tipo}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="excluirContaFixa(${c.id})">
+                            🗑️ Excluir Permanentemente
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function atualizarGraficos() {
+            const categorias = app.calcularPorCategoria();
+            const categoriasComValores = Object.entries(categorias).filter(([_, v]) => v.total > 0);
+
+            if (categoriasComValores.length === 0) return;
+
+            const labels = categoriasComValores.map(([k, v]) => `${v.icon} ${k}`);
+            const data = categoriasComValores.map(([_, v]) => v.total);
+
+            const ctxPizza = document.getElementById('chart-pizza').getContext('2d');
+            if (chartPizza) chartPizza.destroy();
+
+            chartPizza = new Chart(ctxPizza, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                            '#9966FF', '#FF9F40', '#2193b0', '#C9CBCF'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#eee' } }
+                    }
+                }
+            });
+
+            const resumo = app.calcularResumo();
+            const ctxBarras = document.getElementById('chart-barras').getContext('2d');
+            if (chartBarras) chartBarras.destroy();
+
+            chartBarras = new Chart(ctxBarras, {
+                type: 'bar',
+                data: {
+                    labels: ['Entradas', 'Saídas', 'Investimentos'],
+                    datasets: [{
+                        data: [resumo.totalEntradas, resumo.totalSaidas, resumo.totalInvestimentos],
+                        backgroundColor: [
+                            'rgba(86, 171, 47, 0.8)',
+                            'rgba(235, 51, 73, 0.8)',
+                            'rgba(33, 147, 176, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(86, 171, 47, 1)',
+                            'rgba(235, 51, 73, 1)',
+                            'rgba(33, 147, 176, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#eee' }
+                        },
+                        x: { ticks: { color: '#eee' } }
+                    }
+                }
+            });
+        }
+
+        function atualizarCategorias() {
+            const container = document.getElementById('categorias-lista');
+            const categorias = app.calcularPorCategoria();
+
+            container.innerHTML = '';
+
+            Object.entries(categorias).forEach(([nome, dados]) => {
+                if (dados.total > 0 || dados.count > 0) {
+                    const div = document.createElement('div');
+                    div.className = 'category-item';
+                    div.innerHTML = `
+                        <div class="category-info">
+                            <span class="category-icon">${dados.icon}</span>
+                            <div class="category-details">
+                                <div class="category-name">${nome}</div>
+                                <div class="category-count">${dados.count} lançamento${dados.count !== 1 ? 's' : ''}</div>
+                            </div>
+                        </div>
+                        <div class="category-stats">
+                            <div class="category-value">${formatarMoeda(dados.total)}</div>
+                            <div class="category-percent">${dados.percent.toFixed(1)}% do total</div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                }
+            });
+
+            if (container.children.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>Nenhuma categoria com gastos ainda</p></div>';
+            }
+        }
+
+        function excluirLancamento(id) {
+            if (confirm('Deseja realmente excluir este lançamento?')) {
+                app.excluir(id);
+                atualizarDashboard();
+            }
+        }
+
+        function excluirParcelamento(grupoId) {
+            if (confirm('⚠️ ATENÇÃO: Isso excluirá TODAS as parcelas deste parcelamento. Deseja continuar?')) {
+                app.excluirGrupoParcelamento(grupoId);
+                atualizarDashboard();
+                atualizarListaParcelamentos();
+                alert('✅ Parcelamento excluído com sucesso!');
+            }
+        }
+
+        function excluirContaFixa(id) {
+            if (confirm('⚠️ ATENÇÃO: Isso excluirá permanentemente esta conta fixa e TODOS os lançamentos associados a ela. Deseja continuar?')) {
+                app.excluirContaFixa(id);
+                atualizarDashboard();
+                atualizarTabelaContasFixas();
+                alert('✅ Conta fixa excluída com sucesso!');
+            }
+        }
+
+        function marcarComoPaga(id) {
+            app.alterarStatusPagamento(id, 'paga');
+            atualizarDashboard();
+            atualizarListaParcelamentos();
+        }
+
+        function marcarComoNaoPaga(id) {
+            app.alterarStatusPagamento(id, 'nao-paga');
+            atualizarDashboard();
+            atualizarListaParcelamentos();
+        }
+
+        function verParcelamento(grupoId) {
+            trocarAba('parcelamentos');
+            setTimeout(() => {
+                atualizarListaParcelamentos();
+            }, 100);
+        }
+
+        // Event Listeners
+        document.getElementById('parcelas').addEventListener('input', function () {
+            const valor = parseInt(this.value);
+            const alert = document.getElementById('alert-parcelas');
+
+            if (valor >= 2) {
+                alert.style.display = 'block';
+            } else {
+                alert.style.display = 'none';
+            }
+        });
+
+        document.getElementById('form-lancamento').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const entrada = parseFloat(document.getElementById('entrada').value) || 0;
+            const saida = parseFloat(document.getElementById('saida').value) || 0;
+            const investimento = parseFloat(document.getElementById('investimento').value) || 0;
+
+            // Validação: pelo menos um valor deve ser maior que 0
+            if (entrada === 0 && saida === 0 && investimento === 0) {
+                alert('⚠️ Por favor, preencha pelo menos um dos valores: Entrada, Saída ou Investimento.');
+                return;
+            }
+
+            const parcelas = parseInt(document.getElementById('parcelas').value) || 0;
+
+            const lancamento = {
+                data: document.getElementById('data').value,
+                descricao: document.getElementById('descricao').value,
+                categoria: document.getElementById('categoria').value,
+                entrada: entrada,
+                saida: saida,
+                investimento: investimento,
+                statusPagamento: document.getElementById('status-pagamento').value,
+                parcelas: parcelas >= 2 ? parcelas : null,
+                desnecessario: document.getElementById('desnecessario').checked,
+                recorrente: document.getElementById('recorrente').checked && parcelas < 2
+            };
+
+            app.adicionar(lancamento);
+
+            e.target.reset();
+            document.getElementById('data').value = new Date().toISOString().split('T')[0];
+            document.getElementById('alert-parcelas').style.display = 'none';
+
+            atualizarDashboard();
+
+            let mensagem = '✅ Lançamento adicionado com sucesso!';
+            if (parcelas >= 2) {
+                mensagem += `\n💳 ${parcelas} parcelas foram criadas automaticamente nos próximos ${parcelas} meses!`;
+            } else if (lancamento.recorrente) {
+                mensagem += '\n🔄 Conta fixa cadastrada! Ela será repetida automaticamente todo mês.';
+            }
+            alert(mensagem);
+        });
+
+        // Inicialização
+        document.getElementById('data').value = new Date().toISOString().split('T')[0];
+        atualizarDashboard();
+    </script>
+</body>
+
+</html>
