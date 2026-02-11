@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Controle Financeiro Profissional - Aplicativo Desktop
-Versão Python baseada no sistema HTML completo
-"""
-
 import customtkinter as ctk
 from tkinter import messagebox
 import json
@@ -15,21 +8,17 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
-# Configurações do CustomTkinter
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
 
-class ControleFinanceiro:
-    """Classe para gerenciar dados financeiros"""
-    
+class ControleFinanceiro:    
     def __init__(self):
         self.lancamentos = []
         self.contasFixas = []
         self.arquivo_dados = "dados_financeiros.json"
         self.arquivo_contas_fixas = "contas_fixas.json"
         self.carregar_dados()
-        
         self.categorias = {
             'Alimentação': '🍔',
             'Moradia': '🏠',
@@ -41,9 +30,7 @@ class ControleFinanceiro:
             'Renda': '💼',
             'Outros': '🛍️'
         }
-        
         self.verificar_contas_fixas_do_mes()
-    
     def carregar_dados(self):
         """Carrega dados dos arquivos JSON"""
         if os.path.exists(self.arquivo_dados):
