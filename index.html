@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💰 Controle Financeiro Mobile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            overflow-x: hidden;
+        }
+
+        /* LAYOUT MOBILE FIRST */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #2C5F8D 0%, #1a3a52 100%);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        /* ABAS DE NAVEGAÇÃO */
+        .nav-tabs {
+            display: flex;
+            background: #16213e;
+            border-bottom: 2px solid #0f3460;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px 8px;
+            text-align: center;
+            background: #16213e;
+            color: #aaa;
+            border: none;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab.active {
+            color: #4a9eff;
+            border-bottom-color: #4a9eff;
+            background: #1a1a2e;
+        }
+
+        /* CONTEÚDO DAS ABAS */
+        .tab-content {
+            display: none;
+            padding: 15px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* CARDS DE RESUMO */
+        .summary-card {
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .summary-card.green { background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%); }
+        .summary-card.red { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); }
+        .summary-card.blue { background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%); }
+        .summary-card.orange { background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%); }
+        .summary-card.yellow { background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); }
+        .summary-card.purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+        .summary-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .summary-value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .status-badge {
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 15px 0;
+        }
+
+        .status-badge.positive { background: #28a745; color: white; }
+        .status-badge.negative { background: #dc3545; color: white; }
+
+        /* FORMULÁRIO */
+        .form-section {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-title {
+            font-size: 1.2em;
+            color: #4a9eff;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85em;
+            color: #aaa;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            background: #0f1923;
+            color: #eee;
+            font-size: 16px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4a9eff;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+            font-size: 0.9em;
+        }
+
+        .checkbox-label input {
+            width: 22px;
+            height: 22px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4a9eff 0%, #2C5F8D 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+            padding: 10px 15px;
+            font-size: 0.9em;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 10px 15px;
+            font-size: 0.9em;
+        }
+
+        /* LISTA DE LANÇAMENTOS */
+        .lancamento-card {
+            background: #16213e;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid #4a9eff;
+        }
+
+        .lancamento-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .lancamento-desc {
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        .lancamento-valor {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .lancamento-valor.entrada { color: #56ab2f; }
+        .lancamento-valor.saida { color: #eb3349; }
+        .lancamento-valor.investimento { color: #2193b0; }
+
+        .lancamento-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #0f3460;
+        }
+
+        .lancamento-data {
+            font-size: 0.85em;
+            color: #aaa;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        /* STATUS BADGES */
+        .badge-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .badge-paga { background: #28a745; color: white; }
+        .badge-nao-paga { background: #dc3545; color: white; }
+        .badge-parcelada { background: #ffc107; color: #000; }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #4a9eff;
+        }
+
+        /* PARCELAMENTO CARD */
+        .parcela-card {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .parcela-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .parcela-info {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .parcela-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #28a745;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>💰 CONTROLE FINANCEIRO</h1>
+            <p>Gerencie suas finanças</p>
+        </div>
+
+        <!-- NAVEGAÇÃO POR ABAS -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="trocarAba('resumo')">📊 Resumo</button>
+            <button class="nav-tab" onclick="trocarAba('adicionar')">➕ Adicionar</button>
+            <button class="nav-tab" onclick="trocarAba('lancamentos')">📝 Histórico</button>
+            <button class="nav-tab" onclick="trocarAba('parcelas')">💳 Parcelas</button>
+        </div>
+
+        <!-- ABA RESUMO -->
+        <div id="tab-resumo" class="tab-content active">
+            <div class="summary-card green">
+                <div class="summary-label">💵 Total Entradas</div>
+                <div class="summary-value" id="total-entradas">R$ 0,00</div>
+            </div>
+
+            <div class="summary-card red">
+                <div class="summary-label">💸 Total Saídas</div>
+                <div class="summary-value" id="total-saidas">R$ 0,00</div>
+            </div>
+
+            <div class="summary-card blue">
+                <div class="summary-label">📈 Total Investido</div>
+                <div class="summary-value" id="total-investimentos">R$ 0,00</div>
+            </div>
+
+            <div class="summary-card orange">
+                <div class="summary-label">⚠️ Gastos Desnecessários</div>
+                <div class="summary-value" id="total-desnecessarios">R$ 0,00</div>
+            </div>
+
+            <div class="summary-card yellow">
+                <div class="summary-label">💰 Saldo Disponível</div>
+                <div class="summary-value" id="saldo-disponivel">R$ 0,00</div>
+            </div>
+
+            <div class="summary-card purple">
+                <div class="summary-label">🏦 Patrimônio Total</div>
+                <div class="summary-value" id="patrimonio-total">R$ 0,00</div>
+            </div>
+
+            <div class="status-badge positive" id="status">✅ POSITIVO</div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">💡 Economizado</div>
+                    <div class="stat-value" id="percentual-economizado">0%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">📉 Maior Gasto</div>
+                    <div class="stat-value" id="maior-gasto">R$ 0,00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">📝 Lançamentos</div>
+                    <div class="stat-value" id="total-lancamentos">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">❌ Não Pagas</div>
+                    <div class="stat-value" id="total-nao-pagas">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA ADICIONAR -->
+        <div id="tab-adicionar" class="tab-content">
+            <div class="form-section">
+                <div class="form-title">📝 Novo Lançamento</div>
+                
+                <form id="form-lancamento">
+                    <div class="form-group">
+                        <label>Data</label>
+                        <input type="date" id="data" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <input type="text" id="descricao" placeholder="Ex: Supermercado" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="categoria" required>
+                            <option value="Alimentação">🍔 Alimentação</option>
+                            <option value="Moradia">🏠 Moradia</option>
+                            <option value="Transporte">🚗 Transporte</option>
+                            <option value="Lazer">🎮 Lazer</option>
+                            <option value="Saúde">💊 Saúde</option>
+                            <option value="Contas Fixas">📄 Contas Fixas</option>
+                            <option value="Investimentos">📈 Investimentos</option>
+                            <option value="Renda">💼 Renda</option>
+                            <option value="Outros">🛍️ Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status de Pagamento</label>
+                        <select id="status-pagamento" required>
+                            <option value="paga">✅ Paga</option>
+                            <option value="nao-paga">❌ Não Paga</option>
+                            <option value="parcelada">💳 Parcelada</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>💵 Entrada (R$)</label>
+                        <input type="number" id="entrada" placeholder="0.00" step="0.01" min="0" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>💸 Saída (R$)</label>
+                        <input type="number" id="saida" placeholder="0.00" step="0.01" min="0" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>📈 Investimento (R$)</label>
+                        <input type="number" id="investimento" placeholder="0.00" step="0.01" min="0" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>📦 Parcelas (opcional)</label>
+                        <input type="number" id="parcelas" placeholder="Ex: 12" min="0" value="0">
+                    </div>
+
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="desnecessario">
+                        <span>⚠️ Gasto Desnecessário</span>
+                    </label>
+
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="recorrente">
+                        <span>🔄 Conta Fixa Recorrente</span>
+                    </label>
+
+                    <button type="submit" class="btn btn-primary">➕ Adicionar Lançamento</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ABA LANÇAMENTOS -->
+        <div id="tab-lancamentos" class="tab-content">
+            <div id="lista-lancamentos"></div>
+        </div>
+
+        <!-- ABA PARCELAS -->
+        <div id="tab-parcelas" class="tab-content">
+            <div id="lista-parcelas"></div>
+        </div>
+    </div>
+
+    <script>
+        // STORAGE
+        const storage = {
+            get: (key) => {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : [];
+            },
+            set: (key, data) => {
+                localStorage.setItem(key, JSON.stringify(data));
+            }
+        };
+
+        let lancamentos = storage.get('lancamentos');
+        let contasFixas = storage.get('contasFixas');
+
+        const categorias = {
+            'Alimentação': '🍔',
+            'Moradia': '🏠',
+            'Transporte': '🚗',
+            'Lazer': '🎮',
+            'Saúde': '💊',
+            'Contas Fixas': '📄',
+            'Investimentos': '📈',
+            'Renda': '💼',
+            'Outros': '🛍️'
+        };
+
+        // FUNÇÕES
+        function trocarAba(aba) {
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`tab-${aba}`).classList.add('active');
+
+            if (aba === 'lancamentos') atualizarLancamentos();
+            if (aba === 'parcelas') atualizarParcelas();
+        }
+
+        function formatarMoeda(valor) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+        }
+
+        function formatarData(data) {
+            return new Date(data + 'T00:00:00').toLocaleDateString('pt-BR');
+        }
+
+        function gerarId() {
+            return Date.now() + Math.random();
+        }
+
+        function calcularResumo() {
+            const totalEntradas = lancamentos.reduce((acc, l) => acc + (l.entrada || 0), 0);
+            const totalSaidas = lancamentos.reduce((acc, l) => acc + (l.saida || 0), 0);
+            const totalInvestimentos = lancamentos.reduce((acc, l) => acc + (l.investimento || 0), 0);
+            const totalDesnecessarios = lancamentos.reduce((acc, l) => l.desnecessario ? acc + (l.saida || 0) : acc, 0);
+            const totalNaoPagas = lancamentos.filter(l => l.statusPagamento === 'nao-paga').length;
+
+            return {
+                totalEntradas,
+                totalSaidas,
+                totalInvestimentos,
+                totalDesnecessarios,
+                saldoDisponivel: totalEntradas - totalSaidas - totalInvestimentos,
+                patrimonioTotal: totalEntradas - totalSaidas,
+                percentualEconomizado: totalEntradas > 0 ? ((totalEntradas - totalSaidas) / totalEntradas * 100) : 0,
+                maiorGasto: Math.max(...lancamentos.map(l => l.saida || 0), 0),
+                totalLancamentos: lancamentos.length,
+                totalNaoPagas
+            };
+        }
+
+        function atualizarDashboard() {
+            const resumo = calcularResumo();
+
+            document.getElementById('total-entradas').textContent = formatarMoeda(resumo.totalEntradas);
+            document.getElementById('total-saidas').textContent = formatarMoeda(resumo.totalSaidas);
+            document.getElementById('total-investimentos').textContent = formatarMoeda(resumo.totalInvestimentos);
+            document.getElementById('total-desnecessarios').textContent = formatarMoeda(resumo.totalDesnecessarios);
+            document.getElementById('saldo-disponivel').textContent = formatarMoeda(resumo.saldoDisponivel);
+            document.getElementById('patrimonio-total').textContent = formatarMoeda(resumo.patrimonioTotal);
+
+            const statusEl = document.getElementById('status');
+            if (resumo.patrimonioTotal > 0) {
+                statusEl.textContent = '✅ POSITIVO';
+                statusEl.className = 'status-badge positive';
+            } else {
+                statusEl.textContent = '❌ ENDIVIDADO';
+                statusEl.className = 'status-badge negative';
+            }
+
+            document.getElementById('percentual-economizado').textContent = resumo.percentualEconomizado.toFixed(1) + '%';
+            document.getElementById('maior-gasto').textContent = formatarMoeda(resumo.maiorGasto);
+            document.getElementById('total-lancamentos').textContent = resumo.totalLancamentos;
+            document.getElementById('total-nao-pagas').textContent = resumo.totalNaoPagas;
+        }
+
+        function atualizarLancamentos() {
+            const container = document.getElementById('lista-lancamentos');
+            const mesAtual = new Date().toISOString().slice(0, 7);
+            const lancamentosMes = lancamentos.filter(l => l.data.startsWith(mesAtual));
+
+            if (lancamentosMes.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><p>Nenhum lançamento neste mês</p></div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            lancamentosMes.sort((a, b) => new Date(b.data) - new Date(a.data)).forEach(l => {
+                const valor = l.entrada || l.saida || l.investimento;
+                const tipo = l.entrada ? 'entrada' : l.saida ? 'saida' : 'investimento';
+                const statusBadge = l.statusPagamento === 'paga' ? '<span class="badge-status badge-paga">✅ Paga</span>' :
+                                   l.statusPagamento === 'parcelada' ? '<span class="badge-status badge-parcelada">💳 Parcelada</span>' :
+                                   '<span class="badge-status badge-nao-paga">❌ Não Paga</span>';
+
+                const card = document.createElement('div');
+                card.className = 'lancamento-card';
+                card.innerHTML = `
+                    <div class="lancamento-header">
+                        <div class="lancamento-desc">${categorias[l.categoria]} ${l.descricao}</div>
+                        <div class="lancamento-valor ${tipo}">${formatarMoeda(valor)}</div>
+                    </div>
+                    <div class="lancamento-footer">
+                        <div class="lancamento-data">${formatarData(l.data)} ${statusBadge}</div>
+                        <div class="btn-group">
+                            ${l.statusPagamento !== 'paga' ? `<button class="btn btn-success" onclick="marcarPaga(${l.id})">✅</button>` : ''}
+                            <button class="btn btn-danger" onclick="excluirLancamento(${l.id})">🗑️</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function atualizarParcelas() {
+            const container = document.getElementById('lista-parcelas');
+            const grupos = {};
+
+            lancamentos.forEach(l => {
+                if (l.grupoParcelaId) {
+                    if (!grupos[l.grupoParcelaId]) {
+                        grupos[l.grupoParcelaId] = {
+                            descricao: l.descricaoOriginal || l.descricao,
+                            parcelas: [],
+                            totalParcelas: l.totalParcelas,
+                            valorParcela: l.entrada || l.saida || l.investimento
+                        };
+                    }
+                    grupos[l.grupoParcelaId].parcelas.push(l);
+                }
+            });
+
+            const parcelamentos = Object.values(grupos);
+
+            if (parcelamentos.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">💳</div><p>Nenhum parcelamento ativo</p></div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            parcelamentos.forEach(p => {
+                const pagas = p.parcelas.filter(x => x.statusPagamento === 'paga').length;
+                const percentual = (pagas / p.totalParcelas) * 100;
+
+                const card = document.createElement('div');
+                card.className = 'parcela-card';
+                card.innerHTML = `
+                    <div class="parcela-title">${p.descricao}</div>
+                    <div class="parcela-info">
+                        <div class="parcela-row">
+                            <span>Valor da Parcela:</span>
+                            <strong>${formatarMoeda(p.valorParcela)}</strong>
+                        </div>
+                        <div class="parcela-row">
+                            <span>Parcelas Pagas:</span>
+                            <strong>${pagas}/${p.totalParcelas}</strong>
+                        </div>
+                        <div class="parcela-row">
+                            <span>Valor Total:</span>
+                            <strong>${formatarMoeda(p.valorParcela * p.totalParcelas)}</strong>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${percentual}%"></div>
+                    </div>
+                    <div style="text-align: center; font-size: 0.9em; margin-top: 5px;">
+                        ${percentual.toFixed(1)}% concluído
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function marcarPaga(id) {
+            const lancamento = lancamentos.find(l => l.id === id);
+            if (lancamento) {
+                lancamento.statusPagamento = 'paga';
+                storage.set('lancamentos', lancamentos);
+                atualizarDashboard();
+                atualizarLancamentos();
+            }
+        }
+
+        function excluirLancamento(id) {
+            if (confirm('Deseja excluir este lançamento?')) {
+                lancamentos = lancamentos.filter(l => l.id !== id);
+                storage.set('lancamentos', lancamentos);
+                atualizarDashboard();
+                atualizarLancamentos();
+            }
+        }
+
+        // FORM SUBMIT
+        document.getElementById('form-lancamento').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const parcelas = parseInt(document.getElementById('parcelas').value) || 0;
+            const lancamento = {
+                id: gerarId(),
+                data: document.getElementById('data').value,
+                descricao: document.getElementById('descricao').value,
+                categoria: document.getElementById('categoria').value,
+                entrada: parseFloat(document.getElementById('entrada').value) || 0,
+                saida: parseFloat(document.getElementById('saida').value) || 0,
+                investimento: parseFloat(document.getElementById('investimento').value) || 0,
+                statusPagamento: document.getElementById('status-pagamento').value,
+                desnecessario: document.getElementById('desnecessario').checked,
+                recorrente: document.getElementById('recorrente').checked && parcelas < 2
+            };
+
+            if (parcelas >= 2) {
+                const grupoId = gerarId();
+                const valorParcela = (lancamento.entrada || lancamento.saida || lancamento.investimento) / parcelas;
+                
+                for (let i = 0; i < parcelas; i++) {
+                    const dataParcela = new Date(lancamento.data + 'T00:00:00');
+                    dataParcela.setMonth(dataParcela.getMonth() + i);
+                    
+                    lancamentos.push({
+                        id: gerarId() + i,
+                        data: dataParcela.toISOString().split('T')[0],
+                        descricao: lancamento.descricao,
+                        descricaoOriginal: lancamento.descricao,
+                        categoria: lancamento.categoria,
+                        entrada: lancamento.entrada ? valorParcela : 0,
+                        saida: lancamento.saida ? valorParcela : 0,
+                        investimento: lancamento.investimento ? valorParcela : 0,
+                        statusPagamento: i === 0 && lancamento.statusPagamento === 'paga' ? 'paga' : 'nao-paga',
+                        desnecessario: lancamento.desnecessario,
+                        parcelaAtual: i + 1,
+                        totalParcelas: parcelas,
+                        grupoParcelaId: grupoId
+                    });
+                }
+                alert(`✅ ${parcelas} parcelas criadas!`);
+            } else {
+                lancamentos.push(lancamento);
+                alert('✅ Lançamento adicionado!');
+            }
+
+            storage.set('lancamentos', lancamentos);
+            e.target.reset();
+            document.getElementById('data').value = new Date().toISOString().split('T')[0];
+            atualizarDashboard();
+            trocarAba('resumo');
+        });
+
+        // INIT
+        document.getElementById('data').value = new Date().toISOString().split('T')[0];
+        atualizarDashboard();
+    </script>
+</body>
+</html>

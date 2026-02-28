@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Controle Financeiro Profissional
-Aplicativo Desktop para gerenciamento de finanças pessoais
-"""
-
 import customtkinter as ctk
 from tkinter import messagebox, ttk
 import json
